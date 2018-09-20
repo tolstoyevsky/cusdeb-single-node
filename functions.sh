@@ -14,7 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 check_dependencies() {
-    local executables=(docker nc pkg-config python3 supervisord virtualenv)
+    local executables=(curl docker nc pkg-config pandoc python3 supervisord virtualenv)
     local python_dev_installed=false
 
     for executable in "${executables[@]}"; do
