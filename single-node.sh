@@ -311,11 +311,13 @@ build)
 
         ;&
     success)
-        success "development environment is done"
-
         sudo -u "${USER}" sh -c "echo ${TARGET} > cusdeb"
 
         switch_state_to init
+
+        stop_containers
+
+        success "development environment is done"
 
         ;;
     *)
