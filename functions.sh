@@ -160,7 +160,7 @@ get_state() {
     local f="$(pwd)/current-build-state"
 
     if [ ! -f "${f}" ]; then
-        "init"
+        echo "init"
     else
         cat "${f}"
     fi
