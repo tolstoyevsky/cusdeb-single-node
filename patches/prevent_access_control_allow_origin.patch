@@ -1,0 +1,21 @@
+--- websocket.py	2018-09-20 01:12:58.620624233 +0300
++++ websocket.py	2018-09-20 01:13:13.157346647 +0300
+@@ -184,12 +184,12 @@
+         # If there was an origin header, check to make sure it matches
+         # according to check_origin. When the origin is None, we assume it
+         # did not come from a browser and that it can be passed on.
+-        if origin is not None and not self.check_origin(origin):
+-            self.set_status(403)
+-            log_msg = "Cross origin websockets not allowed"
+-            self.finish(log_msg)
+-            gen_log.debug(log_msg)
+-            return
++        #if origin is not None and not self.check_origin(origin):
++        #    self.set_status(403)
++        #    log_msg = "Cross origin websockets not allowed"
++        #    self.finish(log_msg)
++        #    gen_log.debug(log_msg)
++        #    return
+ 
+         self.ws_connection = self.get_websocket_protocol()
+         if self.ws_connection:
