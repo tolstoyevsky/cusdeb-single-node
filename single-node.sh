@@ -259,6 +259,8 @@ build)
         pushd "${TARGET}"/dashboard
             ${DASHBOARD_MANAGE_PY} migrate
             ${DASHBOARD_MANAGE_PY} loaddata "${TARGET}"/dashboard/fixtures/account_types.json
+            ${DASHBOARD_MANAGE_PY} loaddata "${TARGET}"/dashboard/fixtures/distro.json
+            ${DASHBOARD_MANAGE_PY} loaddata "${TARGET}"/dashboard/fixtures/targetdevice.json
         popd
 
         switch_state_to node
