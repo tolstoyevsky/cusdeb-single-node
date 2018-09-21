@@ -83,12 +83,6 @@ USER="$(get_owner .)"
 
 set +x
 
-if [ -f cusdeb ]; then
-    TARGET="$(cat cusdeb)"
-
-    export_main_envs
-fi
-
 run_scripts "helpers"
 
 info "checking dependencies"
@@ -329,51 +323,27 @@ build)
 
     ;;
 compilemessages)
-    export_main_envs
-
-    pushd "${TARGET}"/dashboard
-        ${DASHBOARD_MANAGE_PY} compilemessages -l ru
-    popd
+    run_manage_py compilemessages -l ru
 
     ;;
 create-superuser)
-    export_main_envs
-
-    pushd "${TARGET}"/dashboard
-        ${DASHBOARD_MANAGE_PY} createsuperuser
-    popd
+    run_manage_py createsuperuser
 
     ;;
 dbshell)
-    export_main_envs
-
-    pushd "${TARGET}"/dashboard
-        ${DASHBOARD_MANAGE_PY} dbshell
-    popd
+    run_manage_py dbshell
 
     ;;
 makemessages)
-    export_main_envs
-
-    pushd "${TARGET}"/dashboard
-        ${DASHBOARD_MANAGE_PY} makemessages -l ru -e html
-    popd
+    run_manage_py makemessages -l ru -e html
 
     ;;
 makemigrations)
-    export_main_envs
-
-    pushd "${TARGET}"/dashboard
-        ${DASHBOARD_MANAGE_PY} makemigrations
-    popd
+    run_manage_py makemigrations
 
     ;;
 migrate)
-    export_main_envs
-
-    pushd "${TARGET}"/dashboard
-        ${DASHBOARD_MANAGE_PY} migrate
-    popd
+    run_manage_py migrate
 
     ;;
 remove)
@@ -383,14 +353,12 @@ restart)
     >&2 echo "stub"
     ;;
 shell)
-    export_main_envs
-
-    pushd "${TARGET}"/dashboard
-        ${DASHBOARD_MANAGE_PY} shell
-    popd
+    run_manage_py shell
 
     ;;
 start)
+    check_if_cusdeb_single_node_is_installed
+
     export_main_envs
 
     export_node_envs

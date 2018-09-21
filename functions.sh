@@ -47,6 +47,14 @@ check_dependencies() {
     fi
 }
 
+check_if_cusdeb_single_node_is_installed() {
+    if [ ! -f cusdeb ]; then
+        fatal "cusdeb-single-node hasn't been installed yet."
+
+        exit 1
+    fi
+}
+
 check_ports() {
     local ports=(
         ${PROXY_PORT}
@@ -227,6 +235,18 @@ run_containers() {
     docker pull redis:"${REDIS_TAG}"
     docker run --name cusdeb-redis -p "${REDIS_PORT}":6379 -d redis:"${REDIS_TAG}"
     wait_for "${REDIS_PORT}"
+}
+
+run_manage_py() {
+    check_if_cusdeb_single_node_is_installed
+
+    TARGET="$(cat cusdeb)"
+
+    export_main_envs
+
+    pushd "${TARGET}"/dashboard
+        ${DASHBOARD_MANAGE_PY} "$@"
+    popd
 }
 
 stop_container() {
