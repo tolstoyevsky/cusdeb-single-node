@@ -128,36 +128,6 @@ create_virtenvs() {
     done
 }
 
-export_main_envs() {
-    export DJANGO_CONFIGURATION=Docker
-
-    export DASHBOARD_MANAGE_PY="env PYTHONPATH="${TARGET}/django-cusdeb-firmwares:${TARGET}/django-cusdeb-users:$(pwd)" ${TARGET}/dashboard-env/bin/python manage.py"
-
-    export MONGO_DATABASE="${MONGO_DATABASE}"
-
-    export MONGO_HOST="${MONGO_HOST}"
-
-    export MONGO_PORT="${MONGO_PORT}"
-
-    export PG_DATABASE="${PG_DATABASE}"
-
-    export PG_HOST="${PG_HOST}"
-
-    export PG_PASSWORD="${PG_PASSWORD}"
-
-    export PG_PORT="${PG_PORT}"
-
-    export PG_USER="${PG_USER}"
-
-    export RABBITMQ_PORT=5672
-
-    export RABBITMQ_TAG=3.7
-
-    export REDIS_HOST="${REDIS_HOST}"
-
-    export REDIS_PORT="${REDIS_PORT}"
-}
-
 export_node_envs() {
     export PATH=${PATH}:"${TARGET}"/node/bin
 
@@ -242,10 +212,9 @@ run_manage_py() {
 
     TARGET="$(cat cusdeb)"
 
-    export_main_envs
-
     pushd "${TARGET}"/dashboard
-        ${DASHBOARD_MANAGE_PY} "$@"
+        env PYTHONPATH="${TARGET}/django-cusdeb-firmwares:${TARGET}/django-cusdeb-users:$(pwd)" \
+            ${TARGET}/dashboard-env/bin/python manage.py "$@"
     popd
 }
 

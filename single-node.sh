@@ -39,47 +39,49 @@ set -x
 
 export HOST=${HOST:=localhost}
 
-PROXY_PORT=${PROXY_PORT:=8000}
+export PROXY_PORT=${PROXY_PORT:=8000}
 
-DASHBOARD_PORT=${DASHBOARD_PORT:=8001}
+export DASHBOARD_PORT=${DASHBOARD_PORT:=8001}
 
-BM_PORT=${BM_PORT:=8002}
+export DJANGO_CONFIGURATION=${DJANGO_CONFIGURATION:=Docker}
 
-DOMINION_PORT=${DOMINION_PORT:=8003}
+export BM_PORT=${BM_PORT:=8002}
 
-MONGO_DATABASE=${MONGO_DATABASE:=cusdeb}
+export DOMINION_PORT=${DOMINION_PORT:=8003}
 
-MONGO_HOST=${MONGO_HOST:=localhost}
+export MONGO_DATABASE=${MONGO_DATABASE:=cusdeb}
 
-MONGO_PORT=${MONGO_PORT:=33018}
+export MONGO_HOST=${MONGO_HOST:=localhost}
 
-MONGO_TAG=${MONGO_TAG:=3.2}
+export MONGO_PORT=${MONGO_PORT:=33018}
 
-PG_DATABASE=${PG_DATABASE:=cusdeb}
+export MONGO_TAG=${MONGO_TAG:=3.2}
 
-PG_HOST=${PG_HOST:=localhost}
+export PG_DATABASE=${PG_DATABASE:=cusdeb}
 
-PG_PASSWORD=${PG_PASSWORD:=secret}
+export PG_HOST=${PG_HOST:=localhost}
 
-PG_PORT=${PG_PORT:=54321}
+export PG_PASSWORD=${PG_PASSWORD:=secret}
 
-PG_TAG=${PG_TAG:=9.4}
+export PG_PORT=${PG_PORT:=54321}
 
-PG_USER=${PG_USER:=postgres}
+export PG_TAG=${PG_TAG:=9.4}
 
-RABBITMQ_PORT=${RABBITMQ_PORT:=5672}
+export PG_USER=${PG_USER:=postgres}
 
-RABBITMQ_TAG=${RABBITMQ_TAG:=3.7}
+export RABBITMQ_PORT=${RABBITMQ_PORT:=5672}
 
-REDIS_HOST=${REDIS_HOST=localhost}
+export RABBITMQ_TAG=${RABBITMQ_TAG:=3.7}
 
-REDIS_PORT=${REDIS_PORT:=63791}
+export REDIS_HOST=${REDIS_HOST=localhost}
 
-REDIS_TAG=${REDIS_TAG:=3.2}
+export REDIS_PORT=${REDIS_PORT:=63791}
 
-TOKEN_KEY=${TOKEN_KEY:="gl3q^2f^fh)b=&g)*cah9h5n-d#if9k3s1#tnz2hre\$1ea1zd^"}
+export REDIS_TAG=${REDIS_TAG:=3.2}
 
-USER="$(get_owner .)"
+export TOKEN_KEY=${TOKEN_KEY:="gl3q^2f^fh)b=&g)*cah9h5n-d#if9k3s1#tnz2hre\$1ea1zd^"}
+
+export USER="$(get_owner .)"
 
 set +x
 
@@ -116,8 +118,6 @@ build)
     fi
 
     TARGET="$(get_absolute_path $2)"
-
-    export_main_envs
 
     case "${state}" in
     init)
@@ -359,7 +359,7 @@ shell)
 start)
     check_if_cusdeb_single_node_is_installed
 
-    export_main_envs
+    export TARGET="$(cat cusdeb)"
 
     export_node_envs
 
@@ -367,16 +367,7 @@ start)
 
     run_containers
 
-    env PATH="${TARGET}/dominion-dev/bin:$(pwd)"/runners:"${PATH}" \
-        BM_PORT="${BM_PORT}" \
-        DASHBOARD_PORT="${DASHBOARD_PORT}" \
-        DOMINION_PORT="${DOMINION_PORT}" \
-        REDIS_HOST="${REDIS_HOST}" \
-        REDIS_PORT="${REDIS_PORT}" \
-        TARGET="${TARGET}" \
-        TOKEN_KEY="${TOKEN_KEY}" \
-        USER="${USER}" \
-    supervisord -c config/supervisord.conf
+    env PATH="${TARGET}/dominion-dev/bin:$(pwd)"/runners:"${PATH}" supervisord -c config/supervisord.conf
 
     ;;
 stop)
