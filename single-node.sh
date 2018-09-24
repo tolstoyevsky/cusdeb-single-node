@@ -251,10 +251,11 @@ build)
         ;&
     migrate)
         pushd "${TARGET}"/dashboard
-            ${DASHBOARD_MANAGE_PY} migrate
-            ${DASHBOARD_MANAGE_PY} loaddata "${TARGET}"/dashboard/fixtures/account_types.json
-            ${DASHBOARD_MANAGE_PY} loaddata "${TARGET}"/dashboard/fixtures/distro.json
-            ${DASHBOARD_MANAGE_PY} loaddata "${TARGET}"/dashboard/fixtures/targetdevice.json
+            dashboard_python_path="${TARGET}/django-cusdeb-firmwares:${TARGET}/django-cusdeb-users:$(pwd)"
+            env PYTHONPATH="${dashboard_python_path}" ${TARGET}/dashboard-env/bin/python manage.py migrate
+            env PYTHONPATH="${dashboard_python_path}" ${TARGET}/dashboard-env/bin/python manage.py loaddata "${TARGET}"/dashboard/fixtures/account_types.json
+            env PYTHONPATH="${dashboard_python_path}" ${TARGET}/dashboard-env/bin/python manage.py loaddata "${TARGET}"/dashboard/fixtures/distro.json
+            env PYTHONPATH="${dashboard_python_path}" ${TARGET}/dashboard-env/bin/python manage.py loaddata "${TARGET}"/dashboard/fixtures/targetdevice.json
         popd
 
         switch_state_to node
