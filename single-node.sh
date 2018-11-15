@@ -142,10 +142,9 @@ build)
         info "cloning services git repos"
         clone_git_repos
 
-        info "cloning debootstap git repo"
+        info "setting up toolset"
         pushd "${TARGET}"/pieman
-            sudo -u "${USER}" git clone https://anonscm.debian.org/git/d-i/debootstrap.git
-            sudo -u "${USER}" git -C debootstrap checkout "${DEBOOTSTRAP_VER}"
+            env PREPARE_ONLY_TOOLSET=true ./pieman.sh
         popd
 
         # It's necessary to comment some dependencies, so that they would not be
