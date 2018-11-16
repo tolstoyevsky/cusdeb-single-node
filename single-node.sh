@@ -373,16 +373,18 @@ start)
 stop)
     stop_containers
 
-    for pid in $(sudo supervisorctl -c ./config/supervisord.conf pid all); do
-        # If a process is stopped, supervisorctl shows that the pid of the
-        # process is 0. It's not what we need.
-        if [[ "${pid}" > 0 ]]; then
-            info "killing ${pid}"
-            kill -9 -"${pid}"
-        fi
-    done
+    if [ -f /var/run/cusdeb-supervisor.sock ]; then
+        for pid in $(sudo supervisorctl -c ./config/supervisord.conf pid all); do
+            # If a process is stopped, supervisorctl shows that the pid of the
+            # process is 0. It's not what we need.
+            if [[ "${pid}" > 0 ]]; then
+                info "killing ${pid}"
+                kill -9 -"${pid}"
+            fi
+        done
 
-    kill -9 "$(sudo supervisorctl -c ./config/supervisord.conf pid)"
+        kill -9 "$(sudo supervisorctl -c ./config/supervisord.conf pid)"
+    fi
 
     ;;
 *)
