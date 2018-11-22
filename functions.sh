@@ -243,6 +243,24 @@ stop_containers() {
     done
 }
 
+run_daemons() {
+    echo PATH="${TARGET}/dominion-dev/bin:$(pwd)"/runners:"${PATH}"
+    env PATH="${TARGET}/dominion-dev/bin:$(pwd)"/runners:"${PATH}" supervisord -c config/supervisord.conf
+}
+
+stop_daemons() {
+    for pid in $(sudo supervisorctl -c ./config/supervisord.conf pid all); do
+        # If a process is stopped, supervisorctl shows that the pid of the
+        # process is 0. It's not what we need.
+        if [[ "${pid}" > 0 ]]; then
+            info "killing ${pid}"
+            kill -9 -"${pid}"
+        fi
+    done
+
+    kill -9 "$(sudo supervisorctl -c ./config/supervisord.conf pid)"
+}
+
 switch_state_to() {
     local state=$1
 
