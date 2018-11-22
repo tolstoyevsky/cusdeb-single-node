@@ -366,23 +366,15 @@ start)
     check_ports
 
     run_containers
+    trap "stop_containers && exit 130" 2
 
-    env PATH="${TARGET}/dominion-dev/bin:$(pwd)"/runners:"${PATH}" supervisord -c config/supervisord.conf
+    run_daemons
 
     ;;
 stop)
     stop_containers
 
-    for pid in $(sudo supervisorctl -c ./config/supervisord.conf pid all); do
-        # If a process is stopped, supervisorctl shows that the pid of the
-        # process is 0. It's not what we need.
-        if [[ "${pid}" > 0 ]]; then
-            info "killing ${pid}"
-            kill -9 -"${pid}"
-        fi
-    done
-
-    kill -9 "$(sudo supervisorctl -c ./config/supervisord.conf pid)"
+    stop_daemons
 
     ;;
 *)
