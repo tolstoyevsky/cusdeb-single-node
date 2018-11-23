@@ -181,14 +181,13 @@ run_containers() {
     # MongoDB
     #
     docker pull mongo:"${MONGO_TAG}"
-    docker run --name cusdeb-mongo -v /srv/mongodb:/data/db -p "${MONGO_PORT}":27017 -d mongo:"${MONGO_TAG}"
+    docker run --name cusdeb-mongo -v "${VOLUME_PREFIX}"/mongodb:/data/db -p "${MONGO_PORT}":27017 -d mongo:"${MONGO_TAG}"
     wait_for "${MONGO_PORT}"
-
     #
     # PostgreSQL
     #
     docker pull "postgres:${PG_TAG}"
-    docker run --name cusdeb-postgres -e POSTGRES_PASSWORD="${PG_PASSWORD}" -v /srv/postgres:/var/lib/postgresql/data -p "${PG_PORT}":5432 -d postgres:"${PG_TAG}"
+    docker run --name cusdeb-postgres -e POSTGRES_PASSWORD="${PG_PASSWORD}" -v "${VOLUME_PREFIX}"/postgres:/var/lib/postgresql/data -p "${PG_PORT}":5432 -d postgres:"${PG_TAG}"
     wait_for "${PG_PORT}"
 
     #
