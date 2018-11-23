@@ -83,6 +83,8 @@ export TOKEN_KEY=${TOKEN_KEY:="gl3q^2f^fh)b=&g)*cah9h5n-d#if9k3s1#tnz2hre\$1ea1z
 
 export USER="$(get_owner .)"
 
+export VOLUME_PREFIX=${VOLUME_PREFIX:=/srv}
+
 set +x
 
 run_scripts "helpers"

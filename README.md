@@ -16,3 +16,13 @@ Build project in directory ../cusdeb.
 sudo ./single-node.sh build ../cusdeb
 ```
 Project depends on some code which is not yet published in GitHub
+
+## Troubleshooting
+
+If you executed the `start` command and encountered the following error
+
+```
+docker: Error response from daemon: error while creating mount source path '/srv/mongodb': mkdir /srv/mongodb: read-only file system.
+```
+
+try to change the default value of the `VOLUME_PREFIX` environment variable.
