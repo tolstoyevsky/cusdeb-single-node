@@ -1,5 +1,10 @@
-# Installation
+# cusdeb-single-node 
 
+The project is a set of scripts intended for simplifying deployment of CusDeb for developing purposes.
+
+WARNING: cusdeb-single-node depends on some code which is not yet published in GitHub.
+
+## Installation
 
 Install packages.
 ```bash
@@ -15,7 +20,37 @@ Build project in directory ../cusdeb.
  ```bash
 sudo ./single-node.sh build ../cusdeb
 ```
-Project depends on some code which is not yet published in GitHub
+
+## Usage
+
+Script supports the following parameters:
+
+| Parameter    | Description |
+|------------|---------|
+| build `<target_directory>` | Setup all CusDeb services with all dependences to the `<target_directory>`. It supposed to be empty.
+| start                  | Start all services.
+| stop                   | Stop all services.
+| create-superuser       | Create superuser for Django admin interface.
+| dbshell                | Connect to the project's database.
+| makemigrations         | Generate migrations based on changes in models.
+| migrate                | Apply all migrations.
+| makemessages           | Create `.po` files from `.html` files and place them in dashboard/locale for translation.
+| compilemessages        | Comlipe `.po` files to `.mo` files.
+| shell                  | Start Python interpreter with established enviroment.
+| restart                | Restart all services.
+
+
+When you start services you can specify the ports for them via the `DASHBOARD_PORT`, `BM_PORT` and `DOMINION_PORT` environment variables. For example: 
+```
+sudo env DASHBOARD_PORT=3000 ./single-node.sh start
+``` 
+Default ports are:
+
+| Service                                                   | Default |
+|-----------------------------------------------------------|---------|
+| Dashboard                                                 | 8001    |
+| [Black Magic](https://github.com/tolstoyevsky/blackmagic) | 8002    |
+| [Dominion](https://github.com/tolstoyevsky/dominion)      | 8003    |
 
 ## Troubleshooting
 
@@ -26,3 +61,12 @@ docker: Error response from daemon: error while creating mount source path '/srv
 ```
 
 try to change the default value of the `VOLUME_PREFIX` environment variable.
+
+## Authors
+
+See [AUTHORS](https://github.com/tolstoyevsky/cusdeb-single-node/blob/master/AUTHORS.md).
+    
+## Licensing
+
+cusdeb-single-node is available under the [Apache License, Version 2.0.](https://github.com/tolstoyevsky/cusdeb-single-node/blob/master/LICENSE)
+
