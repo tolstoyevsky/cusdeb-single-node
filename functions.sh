@@ -243,7 +243,6 @@ stop_containers() {
 }
 
 run_daemons() {
-    echo PATH="${TARGET}/dominion-dev/bin:$(pwd)"/runners:"${PATH}"
     env PATH="${TARGET}/dominion-dev/bin:$(pwd)"/runners:"${PATH}" supervisord -c config/supervisord.conf
 }
 
