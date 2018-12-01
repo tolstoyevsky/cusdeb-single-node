@@ -6,6 +6,8 @@ export DJANGO_SETTINGS_MODULE=settings.docker
 
 export PYTHONPATH="${TARGET}"/dominion:"${TARGET}"/dominion/dominion:"${TARGET}"/django-cusdeb-firmwares:"${TARGET}"/django-cusdeb-users
 
+cd "${TARGET}/dominion/dominion"
+
 "${TARGET}"/dominion-env/bin/celery -A tasks worker \
     --base-systems="${TARGET}" \
     --builder-location="${TARGET}"/pieman \
