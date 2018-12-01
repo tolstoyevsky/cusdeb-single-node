@@ -17,7 +17,7 @@ set -e
 
 USAGE="USAGE: $0 build <target directory>|compilemessages|create-superuser|dbshell|makemessages|makemigrations|migrate|remove|restart|shell <service>|start|stop"
 
-if [ -z $1 ]; then
+if [ -z "$1" ]; then
     >&2 echo "${USAGE}"
     exit 1
 fi
@@ -32,6 +32,8 @@ fi
 . ./functions.sh
 
 if [ -f localsettings ]; then
+    # localsettings may not exist, so it's necessary to ignore SC1091.
+    # shellcheck disable=SC1091
     . ./localsettings
 fi
 
@@ -79,13 +81,12 @@ export REDIS_TAG=${REDIS_TAG:=3.2}
 
 export TOKEN_KEY=${TOKEN_KEY:="gl3q^2f^fh)b=&g)*cah9h5n-d#if9k3s1#tnz2hre\$1ea1zd^"}
 
-export USER="$(get_owner .)"
+USER="$(get_owner .)"
+export USER
 
 export VOLUME_PREFIX=${VOLUME_PREFIX:=/srv}
 
 set +x
-
-run_scripts "helpers"
 
 info "checking dependencies"
 check_dependencies
@@ -101,12 +102,12 @@ build)
         exit 1
     fi
 
-    if [ -z $2 ]; then
+    if [ -z "$2" ]; then
         fatal "target directory is not specified"
         exit 1
     fi
 
-    if [ ! -d $2 ]; then
+    if [ ! -d "$2" ]; then
         fatal "$2 does not exist"
         exit 1
     fi
@@ -117,7 +118,7 @@ build)
         state="$(get_state)"
     fi
 
-    TARGET="$(get_absolute_path $2)"
+    TARGET="$(get_absolute_path "$2")"
 
     case "${state}" in
     init)
@@ -251,10 +252,10 @@ build)
     migrate)
         pushd "${TARGET}"/dashboard
             dashboard_python_path="${TARGET}/django-cusdeb-firmwares:${TARGET}/django-cusdeb-users:$(pwd)"
-            env PYTHONPATH="${dashboard_python_path}" ${TARGET}/dashboard-env/bin/python manage.py migrate
-            env PYTHONPATH="${dashboard_python_path}" ${TARGET}/dashboard-env/bin/python manage.py loaddata "${TARGET}"/dashboard/fixtures/account_types.json
-            env PYTHONPATH="${dashboard_python_path}" ${TARGET}/dashboard-env/bin/python manage.py loaddata "${TARGET}"/dashboard/fixtures/distro.json
-            env PYTHONPATH="${dashboard_python_path}" ${TARGET}/dashboard-env/bin/python manage.py loaddata "${TARGET}"/dashboard/fixtures/targetdevice.json
+            env PYTHONPATH="${dashboard_python_path}" "${TARGET}"/dashboard-env/bin/python manage.py migrate
+            env PYTHONPATH="${dashboard_python_path}" "${TARGET}"/dashboard-env/bin/python manage.py loaddata "${TARGET}"/dashboard/fixtures/account_types.json
+            env PYTHONPATH="${dashboard_python_path}" "${TARGET}"/dashboard-env/bin/python manage.py loaddata "${TARGET}"/dashboard/fixtures/distro.json
+            env PYTHONPATH="${dashboard_python_path}" "${TARGET}"/dashboard-env/bin/python manage.py loaddata "${TARGET}"/dashboard/fixtures/targetdevice.json
         popd
 
         switch_state_to node
@@ -359,7 +360,8 @@ shell)
 start)
     check_if_cusdeb_single_node_is_installed
 
-    export TARGET="$(cat cusdeb)"
+    TARGET="$(cat cusdeb)"
+    export TARGET
 
     export_node_envs
 

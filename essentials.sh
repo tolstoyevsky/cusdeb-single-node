@@ -13,8 +13,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# shellcheck disable=SC2034
 NODE_VER=8.12.0
 
+# shellcheck disable=SC2034
 PIP_VER=8
 
 PYTHON_MAJOR_VER=3
@@ -88,18 +90,18 @@ exec_with_retries() {
     n=0
     until [ ${n} -ge 5 ]; do
         "$@" && break
-        n=$[$n + 1]
+        n=$((n + 1))
         info "retrying in 1 sec"
         sleep 1
     done
 }
 
 get_absolute_path() {
-    readlink -f $1
+    readlink -f "$1"
 }
 
 get_owner() {
-    ls -ld $1 | awk '{print $3}'
+    stat -c "%U" "$1"
 }
 
 is_empty_dir() {
@@ -134,19 +136,3 @@ prompt() {
     fi
 }
 
-# Runs all scripts which are located in the specified directory.
-# Globals:
-#     None
-# Arguments:
-#     Path to the directory
-# Returns:
-#     None
-run_scripts() {
-    dir=${1}
-    if [ -d ${dir} ]; then
-        for script in ${dir}/*.sh; do
-            info "running ${script} from ${dir}"
-            . ${script}
-        done
-    fi
-}

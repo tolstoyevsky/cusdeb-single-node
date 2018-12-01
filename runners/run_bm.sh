@@ -2,7 +2,9 @@
 
 pushd "${TARGET}/blackmagic"
     export DJANGO_SETTINGS_MODULE=settings.prod
-    export PYTHONPATH="${TARGET}"/django-cusdeb-firmwares:"${TARGET}"/django-cusdeb-users:"${TARGET}"/dominion:"${TARGET}"/shirow:"$(pwd)"
+
+    PYTHONPATH="${TARGET}"/django-cusdeb-firmwares:"${TARGET}"/django-cusdeb-users:"${TARGET}"/dominion:"${TARGET}"/shirow:"$(pwd)"
+    export PYTHONPATH
 
     "${TARGET}"/blackmagic-env/bin/python bin/blackmagic.py \
         --base-systems-path="${TARGET}" \
