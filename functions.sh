@@ -29,7 +29,7 @@ check_dependencies() {
         exit 1
     fi
 
-    for minor_ver in ${PYTHON_DEV_MINOR_VER[@]}; do
+    for minor_ver in "${PYTHON_DEV_MINOR_VER[@]}"; do
         if [ ! -z "$(pkg-config --libs "python-${PYTHON_MAJOR_VER}.${minor_ver}" 2> /dev/null)" ]; then
             python_dev_installed=true
             break
@@ -90,12 +90,12 @@ clone_git_repos() {
         dashboard
     )
 
-    for service in ${github[@]}; do
+    for service in "${github[@]}"; do
         info "cloning ${service}"
         sudo -u "${USER}" git clone https://github.com/tolstoyevsky/"${service}".git "${TARGET}/${service}"
     done
 
-    for service in ${bitbucket[@]}; do
+    for service in "${bitbucket[@]}"; do
         info "cloning ${service}"
         sudo -u "${USER}" git clone git@bitbucket.org:cusdeb/"${service}".git "${TARGET}/${service}"
     done
@@ -105,11 +105,16 @@ comment_by_pattern() {
     local pattern=$1
     local f=$2
 
+    # Make a copy of the file not to read and write the same file.
+    cp "${f}" "${f}.copy"
+
     while read -r line; do
         if [[ ${line} == *"${pattern}"* ]]; then
-            sed -i "s/${line//\//\\/}/#${line//\//\\/}/g" ${f}
+            sed -i "s/${line//\//\\/}/#${line//\//\\/}/g" "${f}.copy"
         fi
-    done < ${f}
+    done < "${f}"
+
+    mv "${f}.copy" "${f}"
 }
 
 create_virtenvs() {
@@ -121,7 +126,7 @@ create_virtenvs() {
         pieman-env
     )
 
-    for env in ${envs[@]}; do
+    for env in "${envs[@]}"; do
         info "creating ${env} virtual environment"
         sudo -u "${USER}" virtualenv -p python3 "${TARGET}/${env}"
     done
@@ -134,7 +139,9 @@ export_node_envs() {
 }
 
 get_state() {
-    local f="$(pwd)/current-build-state"
+    local f
+
+    f="$(pwd)/current-build-state"
 
     if [ ! -f "${f}" ]; then
         echo "init"
@@ -151,7 +158,7 @@ install_requirements_to_virtenvs() {
         dominion
     )
 
-    for service in ${services[@]}; do
+    for service in "${services[@]}"; do
         info "installing requirements to ${service}-env"
         sudo -u "${USER}" "${TARGET}/${service}"-env/bin/pip install pip=="${PIP_VER}"
         sudo -u "${USER}" "${TARGET}/${service}"-env/bin/pip install -r "${TARGET}/${service}"/requirements.txt
@@ -170,8 +177,8 @@ install_requirements_to_virtenvs() {
     sudo -u "${USER}" "${TARGET}"/pieman-env/bin/pip install -r "${TARGET}"/pieman/pieman/requirements.txt
 
     pushd "${TARGET}"/pieman/pieman
-        sudo -u "${USER}" ${TARGET}/pieman-env/bin/python setup.py build
-        sudo -u "${USER}" ${TARGET}/pieman-env/bin/python setup.py install
+        sudo -u "${USER}" "${TARGET}"/pieman-env/bin/python setup.py build
+        sudo -u "${USER}" "${TARGET}"/pieman-env/bin/python setup.py install
     popd
 }
 
@@ -212,7 +219,7 @@ run_manage_py() {
 
     pushd "${TARGET}"/dashboard
         env PYTHONPATH="${TARGET}/django-cusdeb-firmwares:${TARGET}/django-cusdeb-users:$(pwd)" \
-            ${TARGET}/dashboard-env/bin/python manage.py "$@"
+            "${TARGET}"/dashboard-env/bin/python manage.py "$@"
     popd
 }
 
@@ -236,20 +243,20 @@ stop_containers() {
         cusdeb-redis
     )
 
-    for container in ${containers[@]}; do
+    for container in "${containers[@]}"; do
         stop_container "${container}"
     done
 }
 
 run_daemons() {
-    env PATH="${TARGET}/dominion-dev/bin:$(pwd)"/runners:"${PATH}" supervisord -c config/supervisord.conf
+    env PATH="${TARGET}/dominion-dev/bin:$(pwd)/runners:${PATH}" supervisord -c config/supervisord.conf
 }
 
 stop_daemons() {
     for pid in $(sudo supervisorctl -c ./config/supervisord.conf pid all); do
         # If a process is stopped, supervisorctl shows that the pid of the
         # process is 0. It's not what we need.
-        if [[ "${pid}" > 0 ]]; then
+        if [[ "${pid}" -gt 0 ]]; then
             info "killing ${pid}"
             kill -9 -"${pid}"
         fi
