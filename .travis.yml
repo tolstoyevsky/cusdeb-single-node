@@ -1,0 +1,15 @@
+language: bash
+
+addons:
+  apt:
+    sources:
+    - debian-sid
+
+before_install:
+  - sudo apt-get install -y cabal-install
+  - cabal update
+  - cabal install shellcheck
+
+script:
+  - bash -c 'find . -type f -name "*.sh" | xargs shellcheck -e SC2148 -x'
+
