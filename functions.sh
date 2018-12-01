@@ -57,7 +57,6 @@ check_if_cusdeb_single_node_is_installed() {
 
 check_ports() {
     local ports=(
-        ${PROXY_PORT}
         ${DASHBOARD_PORT}
         ${BM_PORT}
         ${DOMINION_PORT}

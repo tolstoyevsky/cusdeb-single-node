@@ -39,8 +39,6 @@ set -x
 
 export HOST=${HOST:=localhost}
 
-export PROXY_PORT=${PROXY_PORT:=8000}
-
 export DASHBOARD_PORT=${DASHBOARD_PORT:=8001}
 
 export DJANGO_CONFIGURATION=${DJANGO_CONFIGURATION:=Docker}
