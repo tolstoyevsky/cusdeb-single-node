@@ -60,6 +60,7 @@ check_ports() {
         ${DASHBOARD_PORT}
         ${BM_PORT}
         ${DOMINION_PORT}
+        ${ORION_PORT}
         ${MONGO_PORT}
         ${POSGRESQL_PORT}
         ${RABBITMQ_PORT}
@@ -81,6 +82,7 @@ clone_git_repos() {
         blackmagic
         django-cusdeb-firmwares
         dominion
+        orion
         pieman
         shirow
     )
@@ -99,6 +101,11 @@ clone_git_repos() {
         info "cloning ${service}"
         sudo -u "${USER}" git clone git@bitbucket.org:cusdeb/"${service}".git "${TARGET}/${service}"
     done
+
+    # TODO: remove the following lines when the branch is merged to master.
+    pushd "${TARGET}"/orion
+        git checkout integrate-to-cusdeb
+    popd
 }
 
 comment_by_pattern() {
@@ -123,6 +130,7 @@ create_virtenvs() {
         blackmagic-env
         dashboard-env
         dominion-env
+        orion-env
         pieman-env
     )
 
@@ -156,6 +164,7 @@ install_requirements_to_virtenvs() {
         blackmagic
         dashboard
         dominion
+        orion
     )
 
     for service in "${services[@]}"; do
@@ -172,6 +181,8 @@ install_requirements_to_virtenvs() {
     sudo -u "${USER}" "${TARGET}"/blackmagic-env/bin/pip install -r "${TARGET}"/shirow/requirements.txt
 
     sudo -u "${USER}" "${TARGET}"/dominion-env/bin/pip install -r "${TARGET}"/shirow/requirements.txt
+
+    sudo -u "${USER}" "${TARGET}"/orion-env/bin/pip install -r "${TARGET}"/shirow/requirements.txt
 
     info "installing requirements to pieman-env"
     sudo -u "${USER}" "${TARGET}"/pieman-env/bin/pip install -r "${TARGET}"/pieman/pieman/requirements.txt
