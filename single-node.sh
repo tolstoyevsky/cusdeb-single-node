@@ -49,6 +49,8 @@ export BM_PORT=${BM_PORT:=8002}
 
 export DOMINION_PORT=${DOMINION_PORT:=8003}
 
+export ORION_PORT=${ORION_PORT:=8004}
+
 export MONGO_DATABASE=${MONGO_DATABASE:=cusdeb}
 
 export MONGO_HOST=${MONGO_HOST:=localhost}
@@ -163,6 +165,8 @@ build)
         comment_by_pattern django-cusdeb-users "${TARGET}"/dominion/requirements.txt
         comment_by_pattern shirow "${TARGET}"/dominion/requirements.txt
 
+        comment_by_pattern shirow "${TARGET}"/orion/requirements.txt
+
         pushd "${TARGET}"/blackmagic
             cp settings/prod.py.template settings/prod.py
             sed -i -e "s/{MONGO_DATABASE}/${MONGO_DATABASE}/" settings/prod.py
@@ -193,6 +197,7 @@ build)
         sudo -u "${USER}" git -C "${TARGET}"/dashboard checkout .
         sudo -u "${USER}" git -C "${TARGET}"/blackmagic checkout .
         sudo -u "${USER}" git -C "${TARGET}"/dominion checkout .
+        sudo -u "${USER}" git -C "${TARGET}"/orion checkout .
 
         switch_state_to patch
 
@@ -206,6 +211,10 @@ build)
         popd
 
         pushd "${TARGET}"/dominion-env/lib/python3.*/site-packages/tornado
+            patch -f -p0 < "${cwd}"/patches/prevent_access_control_allow_origin.patch
+        popd
+
+        pushd "${TARGET}"/orion-env/lib/python3.*/site-packages/tornado
             patch -f -p0 < "${cwd}"/patches/prevent_access_control_allow_origin.patch
         popd
 
