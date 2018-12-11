@@ -254,6 +254,7 @@ build)
             dashboard_python_path="${TARGET}/django-cusdeb-firmwares:${TARGET}/django-cusdeb-users:$(pwd)"
             env PYTHONPATH="${dashboard_python_path}" "${TARGET}"/dashboard-env/bin/python manage.py migrate
             env PYTHONPATH="${dashboard_python_path}" "${TARGET}"/dashboard-env/bin/python manage.py loaddata "${TARGET}"/dashboard/fixtures/account_types.json
+            env PYTHONPATH="${dashboard_python_path}" "${TARGET}"/dashboard-env/bin/python manage.py loaddata "${TARGET}"/dashboard/fixtures/buildtype.json
             env PYTHONPATH="${dashboard_python_path}" "${TARGET}"/dashboard-env/bin/python manage.py loaddata "${TARGET}"/dashboard/fixtures/distro.json
             env PYTHONPATH="${dashboard_python_path}" "${TARGET}"/dashboard-env/bin/python manage.py loaddata "${TARGET}"/dashboard/fixtures/targetdevice.json
         popd
