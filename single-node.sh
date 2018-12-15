@@ -336,6 +336,15 @@ dbshell)
     run_manage_py dbshell
 
     ;;
+loaddata)
+    if [ -z "$2" ]; then
+        fatal "fixture is not specified"
+        exit 1
+    fi
+
+    run_manage_py loaddata "$2"
+
+    ;;
 makemessages)
     run_manage_py makemessages -l ru -e html
 

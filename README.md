@@ -32,6 +32,7 @@ Script supports the following parameters:
 | stop                   | Stop all services.
 | create-superuser       | Create superuser for Django admin interface.
 | dbshell                | Connect to the project's database.
+| loaddata `<fixture>`   | Read the data from the specified fixture and load it into the database (note that `<fixture>` must be a full path to the fixture file).
 | makemigrations         | Generate migrations based on changes in models.
 | migrate                | Apply all migrations.
 | makemessages           | Create `.po` files from `.html` files and place them in dashboard/locale for translation.
