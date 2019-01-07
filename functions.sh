@@ -229,9 +229,11 @@ run_manage_py() {
     TARGET="$(cat cusdeb)"
 
     pushd "${TARGET}"/dashboard
-        env PYTHONPATH="${TARGET}/django-cusdeb-firmwares:${TARGET}/django-cusdeb-users:$(pwd)" \
-            "${TARGET}"/dashboard-env/bin/python manage.py "$@"
+        local exit_info=$( { env PYTHONPATH="${TARGET}/django-cusdeb-firmwares:${TARGET}/django-cusdeb-users:$(pwd)" \
+            "${TARGET}"/dashboard-env/bin/python manage.py "$@"; } 2>&1 )
     popd
+
+    info "${exit_info}"
 }
 
 stop_container() {
