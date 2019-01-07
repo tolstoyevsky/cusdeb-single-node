@@ -35,7 +35,7 @@ Script supports the following parameters:
 | loaddata `<fixture>`   | Read the data from the specified fixture and load it into the database (note that `<fixture>` must be a full path to the fixture file).
 | makemigrations         | Generate migrations based on changes in models.
 | migrate                | Apply all migrations.
-| makemessages           | Create `.po` files from `.html` files and place them in dashboard/locale for translation.
+| makemessages           | Create `.po` files from `.html`, `.py` and `.txt` files and place them in dashboard/locale for translation.
 | compilemessages        | Comlipe `.po` files to `.mo` files.
 | shell                  | Start Python interpreter with established enviroment.
 | restart                | Restart all services.

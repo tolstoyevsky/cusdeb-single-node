@@ -355,7 +355,7 @@ loaddata)
 
     ;;
 makemessages)
-    run_manage_py makemessages -l ru -e html
+    run_manage_py makemessages -l ru
 
     ;;
 makemigrations)
