@@ -38,6 +38,7 @@ Script supports the following parameters:
 | makemessages           | Create `.po` files from `.html`, `.py` and `.txt` files and place them in dashboard/locale for translation.
 | compilemessages        | Comlipe `.po` files to `.mo` files.
 | shell                  | Start Python interpreter with established enviroment.
+| rebuild  [`<full>`]    | Clean the directory the CusDeb services were installed to (see the `build` command) and re-setup all the services. By default, the chroot environments will be left when cleaning the directory. If you want to re-setup not only the CusDeb services but also chroot environments, pass `full` as the first argument to `rebuild`.
 | restart                | Restart all services.
 
 

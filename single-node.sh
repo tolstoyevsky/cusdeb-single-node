@@ -100,7 +100,7 @@ check_dependencies
 case $1 in
 build)
     if [ -f cusdeb ]; then
-        fatal "cusdeb-single-node is already installed. Run the script with remove param before running build."
+        fatal "cusdeb-single-node is already installed. Run rebuild command."
         exit 1
     fi
 
@@ -114,223 +114,67 @@ build)
         exit 1
     fi
 
+    resume_state
     state="$(get_state)"
-    if [ "${state}" != "init" ] && ! prompt "The build command was interrupted. Do you want to resume it?"; then
-        switch_state_to init
-        state="$(get_state)"
-    fi
 
     TARGET="$(get_absolute_path "$2")"
 
-    case "${state}" in
-    init)
-        if ! is_empty_dir "${TARGET}"; then
-            fatal "the specified directory is not empty"
-            exit 1
-        fi
+    build_env "${state}" full
 
-        info "checking ports"
-        check_ports
+    ;;
+rebuild)
+    TARGET="$(<cusdeb)"
 
-        info "creating directory for the resolver"
-        sudo -u "${USER}" mkdir "${TARGET}"/blackmagic-workspace
-
-        info "creating directory for the result images"
-        sudo -u "${USER}" mkdir "${TARGET}"/dominion-workspace
-
-        switch_state_to clone
-
-        ;&
-    clone)
-        info "cloning services git repos"
-        clone_git_repos
-
-        info "setting up toolset"
-        pushd "${TARGET}"/pieman
-            env PREPARE_ONLY_TOOLSET=true ./pieman.sh
-        popd
-
-        # It's necessary to comment some dependencies, so that they would not be
-        # installed to virtual environments. All the dependencies will be passed
-        # through PYTHONPATH.
-        comment_by_pattern django-cusdeb-firmwares "${TARGET}"/dashboard/requirements.txt
-        comment_by_pattern django-cusdeb-users "${TARGET}"/dashboard/requirements.txt
-
-        comment_by_pattern django-cusdeb-firmwares "${TARGET}"/blackmagic/requirements.txt
-        comment_by_pattern django-cusdeb-users "${TARGET}"/blackmagic/requirements.txt
-        comment_by_pattern dominion "${TARGET}"/blackmagic/requirements.txt
-        comment_by_pattern shirow "${TARGET}"/blackmagic/requirements.txt
-
-        comment_by_pattern django-cusdeb-firmwares "${TARGET}"/dominion/requirements.txt
-        comment_by_pattern django-cusdeb-users "${TARGET}"/dominion/requirements.txt
-        comment_by_pattern shirow "${TARGET}"/dominion/requirements.txt
-
-        comment_by_pattern shirow "${TARGET}"/orion/requirements.txt
-
-        pushd "${TARGET}"/blackmagic
-            cp settings/prod.py.template settings/prod.py
-            sed -i -e "s/{MONGO_DATABASE}/${MONGO_DATABASE}/" settings/prod.py
-            sed -i -e "s/{MONGO_HOST}/${MONGO_HOST}/" settings/prod.py
-            sed -i -e "s/{MONGO_PORT}/${MONGO_PORT}/" settings/prod.py
-            sed -i -e "s/{PG_DATABASE}/${PG_DATABASE}/" settings/prod.py
-            sed -i -e "s/{PG_HOST}/${PG_HOST}/" settings/prod.py
-            sed -i -e "s/{PG_PASSWORD}/${PG_PASSWORD}/" settings/prod.py
-            sed -i -e "s/{PG_PORT}/${PG_PORT}/" settings/prod.py
-            sed -i -e "s/{PG_USER}/${PG_USER}/" settings/prod.py
-        popd
-
-        switch_state_to virtenv
-
-        ;&
-    virtenv)
-        info "creating virtual environments"
-        create_virtenvs
-
-        switch_state_to requirements
-
-        ;&
-    requirements)
-        info "installing requirements to virtual environments"
-        install_requirements_to_virtenvs
-
-        # Undo commenting the dependencies
-        sudo -u "${USER}" git -C "${TARGET}"/dashboard checkout .
-        sudo -u "${USER}" git -C "${TARGET}"/blackmagic checkout .
-        sudo -u "${USER}" git -C "${TARGET}"/dominion checkout .
-        sudo -u "${USER}" git -C "${TARGET}"/orion checkout .
-
-        switch_state_to patch
-
-        ;&
-    patch)
-        info "patching Tornado"
-
-        cwd="$(pwd)"
-        pushd "${TARGET}"/blackmagic-env/lib/python3.*/site-packages/tornado
-            patch -f -p0 < "${cwd}"/patches/prevent_access_control_allow_origin.patch
-        popd
-
-        pushd "${TARGET}"/dominion-env/lib/python3.*/site-packages/tornado
-            patch -f -p0 < "${cwd}"/patches/prevent_access_control_allow_origin.patch
-        popd
-
-        pushd "${TARGET}"/orion-env/lib/python3.*/site-packages/tornado
-            patch -f -p0 < "${cwd}"/patches/prevent_access_control_allow_origin.patch
-        popd
-
-        switch_state_to containers
-
-        ;&
-    containers)
-        info "fetching wait-for-it.sh"
-        curl -O https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh
-        chmod +x wait-for-it.sh
-
-        run_containers
-
-        exec_with_retries docker run -it --rm --link cusdeb-postgres:postgres -e PGPASSWORD="${PG_PASSWORD}" postgres:"${PG_TAG}" createdb -h postgres -U postgres cusdeb
-
-        switch_state_to indexes
-
-        ;&
-    indexes)
-        info "uploading indexes into database "
-        distros=(
-            "devuan,jessie,armhf,http://auto.mirror.devuan.org/merged/"
-            "raspbian,stretch,armhf,http://archive.raspbian.org/raspbian/"
-            "ubuntu,xenial,armhf,http://ports.ubuntu.com/ubuntu-ports/"
-            "ubuntu,bionic,armhf,http://ports.ubuntu.com/ubuntu-ports/"
-            "ubuntu,bionic,arm64,http://ports.ubuntu.com/ubuntu-ports/"
-        )
-
-        for distro in "${distros[@]}"; do
-            IFS=',' read -r -a pieces <<< "${distro}"
-
-            "${TARGET}"/appleseed-env/bin/python "${TARGET}"/appleseed/bin/appleseed.py \
-                --mongodb-host="${MONGO_HOST}" \
-                --mongodb-port="${MONGO_PORT}" \
-                --distro="${pieces[0]}" \
-                --suite="${pieces[1]}" \
-                --arch="${pieces[2]}" \
-                --mirror="${pieces[3]}"
-        done
-
-        switch_state_to migrate
-
-        ;&
-    migrate)
-        pushd "${TARGET}"/dashboard
-            dashboard_python_path="${TARGET}/django-cusdeb-firmwares:${TARGET}/django-cusdeb-users:$(pwd)"
-            env PYTHONPATH="${dashboard_python_path}" "${TARGET}"/dashboard-env/bin/python manage.py migrate
-            env PYTHONPATH="${dashboard_python_path}" "${TARGET}"/dashboard-env/bin/python manage.py loaddata "${TARGET}"/dashboard/fixtures/account_types.json
-            env PYTHONPATH="${dashboard_python_path}" "${TARGET}"/dashboard-env/bin/python manage.py loaddata "${TARGET}"/dashboard/fixtures/buildtype.json
-            env PYTHONPATH="${dashboard_python_path}" "${TARGET}"/dashboard-env/bin/python manage.py loaddata "${TARGET}"/dashboard/fixtures/distro.json
-            env PYTHONPATH="${dashboard_python_path}" "${TARGET}"/dashboard-env/bin/python manage.py loaddata "${TARGET}"/dashboard/fixtures/targetdevice.json
-        popd
-
-        switch_state_to node
-
-        ;&
-    node)
-        if [ -z "$(which node)" ]; then
-            info "Installing Node.js"
-            node=node-v"${NODE_VER}"-linux-x64.tar.xz
-            sudo -u "${USER}" curl -o "${TARGET}/${node}" https://nodejs.org/dist/v"${NODE_VER}/${node}"
-            sudo -u "${USER}" tar xJvf "${TARGET}/${node}" -C "${TARGET}"
-            tar=${node%.*}
-            dir=${tar%.*}
-            sudo -u "${USER}" mv "${TARGET}"/"${dir}" "${TARGET}"/node
-            sudo -u "${USER}" rm "${TARGET}"/"${node}"
-        else
-            info "Node.js is already installed"
-        fi
-
-        switch_state_to chroots
-
-        ;&
-    chroots)
-        info "creating chroots environments"
+    if [ -z "$2" ]; then
+        recipe=fast
 
         chroots=(
-            "devuan-jessie-armhf,rpi-3-b"
-            "raspbian-stretch-armhf,rpi-3-b"
-            "ubuntu-xenial-armhf,rpi-2-b"
-            "ubuntu-bionic-arm64,rpi-3-b"
-            "ubuntu-bionic-armhf,rpi-3-b"
-        )
+                "devuan-jessie-armhf"
+                "raspbian-stretch-armhf"
+                "ubuntu-xenial-armhf"
+                "ubuntu-bionic-arm64"
+                "ubuntu-bionic-armhf"
+            )
 
-        pushd "${TARGET}"/pieman
-            for chroot in "${chroots[@]}"; do
-                IFS=',' read -r -a pieces <<< "${chroot}"
+        for chroot in "${chroots[@]}"; do
+            lines="$(find "$TARGET" -maxdepth 1 -name "$chroot"| wc -l)"
+            if [ "$lines" -eq 0  ]; then
+                fatal "target directory do not have nessesary build - $chroot, so use full rebuild."
+                exit 1
+            fi
+        done
+    else
+        recipe="$2"
+    fi
 
-                env CREATE_ONLY_CHROOT=true \
-                    OS="${pieces[0]}" \
-                    PROJECT_NAME="${pieces[0]}" \
-                    DEVICE="${pieces[1]}" \
-                    PYTHON="${TARGET}"/pieman-env/bin/python \
-                ./pieman.sh
+    resume_state
+    state="$(get_state)"
 
-                mv build/"${pieces[0]}"/chroot "${TARGET}/${pieces[0]}"
-            done
-        popd
+    if [ "${state}" = "init" ] || [ "${state}" = "clone" ]; then
+        info "cleaning up"
 
-        switch_state_to success
+        case $recipe in
+        fast)
+            pushd "$TARGET"
+                to_be_deleted="$(find . -maxdepth 1 ! -name '*arm64' ! -name '*armhf' ! -name '*.')"
 
-        ;&
-    success)
-        sudo -u "${USER}" sh -c "echo ${TARGET} > cusdeb"
+                # shellcheck disable=SC2068
+                for item in ${to_be_deleted[@]}; do
+                    if [ ! "$item" = "" ]; then
+                        rm -r "$item"
+                    fi
+                done
+            popd
+            ;;
+        full)
+            if [ "$(ls -A "$TARGET")" ]; then
+                # shellcheck disable=SC2115
+                rm -r "$TARGET"/*
+            fi
+        esac
+    fi
 
-        switch_state_to init
-
-        stop_containers
-
-        success "development environment is done"
-
-        ;;
-    *)
-        fatal "unknown state ${state}"
-        exit 1
-    esac
+    build_env "$state" "$recipe"
 
     ;;
 compilemessages)
