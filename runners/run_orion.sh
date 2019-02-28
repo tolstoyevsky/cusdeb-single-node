@@ -1,7 +1,9 @@
 #!/bin/bash
 
 pushd "${TARGET}/orion"
-    PYTHONPATH="${TARGET}/shirow:$(pwd)"
+    export DJANGO_SETTINGS_MODULE=settings.prod
+
+    PYTHONPATH="${TARGET}"/django-cusdeb-firmwares:"${TARGET}"/django-cusdeb-users:"${TARGET}"/orion:"${TARGET}"/shirow:"$(pwd)"
     export PYTHONPATH
 
     env PATH="${PATH}:$(pwd)/bin" "${TARGET}"/orion-env/bin/python ./bin/server.py \
@@ -11,5 +13,7 @@ pushd "${TARGET}/orion"
         --redis-host="${REDIS_HOST}" \
         --redis-port="${REDIS_PORT}" \
         --token-key="${TOKEN_KEY}" \
-        --dominion-workspace="${TARGET}"/dominion-workspace
+        --dominion-workspace="${TARGET}"/dominion-workspace \
+        --mongodb-host=localhost \
+        --mongodb-port=33018
 popd

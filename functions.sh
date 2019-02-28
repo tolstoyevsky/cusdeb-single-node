@@ -206,6 +206,18 @@ build_env() {
             sed -i -e "s/{PG_USER}/${PG_USER}/" settings/prod.py
         popd
 
+        pushd "${TARGET}"/orion
+            cp settings/prod.py.template settings/prod.py
+            sed -i -e "s/{MONGO_DATABASE}/${MONGO_DATABASE}/" settings/prod.py
+            sed -i -e "s/{MONGO_HOST}/${MONGO_HOST}/" settings/prod.py
+            sed -i -e "s/{MONGO_PORT}/${MONGO_PORT}/" settings/prod.py
+            sed -i -e "s/{PG_DATABASE}/${PG_DATABASE}/" settings/prod.py
+            sed -i -e "s/{PG_HOST}/${PG_HOST}/" settings/prod.py
+            sed -i -e "s/{PG_PASSWORD}/${PG_PASSWORD}/" settings/prod.py
+            sed -i -e "s/{PG_PORT}/${PG_PORT}/" settings/prod.py
+            sed -i -e "s/{PG_USER}/${PG_USER}/" settings/prod.py
+        popd
+
         switch_state_to virtenv
 
         ;&
