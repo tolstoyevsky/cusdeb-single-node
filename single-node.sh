@@ -129,6 +129,7 @@ rebuild)
         recipe=fast
 
         chroots=(
+                "debian-buster-armhf"
                 "devuan-jessie-armhf"
                 "raspbian-stretch-armhf"
                 "ubuntu-xenial-armhf"
