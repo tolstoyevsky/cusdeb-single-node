@@ -264,6 +264,7 @@ build_env() {
         if [ "${how}" = "full" ]; then
             info "uploading indexes into database "
             distros=(
+                "debian,buster,armhf,http://deb.debian.org/debian/"
                 "devuan,jessie,armhf,http://auto.mirror.devuan.org/merged/"
                 "raspbian,stretch,armhf,http://archive.raspbian.org/raspbian/"
                 "ubuntu,xenial,armhf,http://ports.ubuntu.com/ubuntu-ports/"
@@ -320,6 +321,7 @@ build_env() {
             info "creating chroots environments"
 
             chroots=(
+                "debian-buster-armhf,opi-pc-plus"
                 "devuan-jessie-armhf,rpi-3-b"
                 "raspbian-stretch-armhf,rpi-3-b"
                 "ubuntu-xenial-armhf,rpi-2-b"
