@@ -170,13 +170,6 @@ build_env() {
         info "cloning services git repos"
         clone_git_repos
 
-        if [ "${how}" = "full" ]; then
-            info "setting up toolset"
-            pushd "${TARGET}"/pieman
-                env PREPARE_ONLY_TOOLSET=true ./pieman.sh
-            popd
-        fi
-
         # It's necessary to comment some dependencies, so that they would not be
         # installed to virtual environments. All the dependencies will be passed
         # through PYTHONPATH.
@@ -213,7 +206,7 @@ build_env() {
         info "creating virtual environments"
         create_virtenvs
 
-        switch_state_to requirements
+        switch_state_to toolset
 
         ;&
     requirements)
@@ -227,6 +220,19 @@ build_env() {
         sudo -u "${USER}" git -C "${TARGET}"/orion checkout .
 
         switch_state_to patch
+
+        ;&
+    toolset)
+        info "building Pieman toolset"
+
+        if [ "${how}" = "full" ]; then
+            info "setting up toolset"
+            pushd "${TARGET}"/pieman
+                env PREPARE_ONLY_TOOLSET=true PYTHON="${TARGET}"/pieman-env/bin/python ./pieman.sh
+            popd
+        fi
+
+        switch_state_to requirements
 
         ;&
     patch)
