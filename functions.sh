@@ -321,6 +321,8 @@ build_env() {
             info "Node.js is already installed"
         fi
 
+        switch_state_to chroots
+
         ;&
     chroots)
         if [ "${how}" = "full" ]; then
