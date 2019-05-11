@@ -16,7 +16,7 @@ Clone project.
 git clone git@github.com:tolstoyevsky/cusdeb-single-node.git
 ```
 
-Create directory cusdeb
+Create directory cusdeb.
  ```bash
 mkdir cusdeb
 ```
