@@ -16,8 +16,13 @@ Clone project.
 git clone git@github.com:tolstoyevsky/cusdeb-single-node.git
 ```
 
-Build project in directory ../cusdeb.
+Create directory cusdeb
  ```bash
+mkdir cusdeb
+```
+Build project in directory cusdeb.
+ ```bash
+cd cusdeb-single-node
 sudo ./single-node.sh build ../cusdeb
 ```
 
