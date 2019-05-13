@@ -8,7 +8,7 @@ WARNING: cusdeb-single-node depends on some code which is not yet published in G
 
 Install packages.
 ```bash
-sudo apt install git docker docker-compose curl pkg-config pandoc supervisor python3-pip virtualenv postgresql postgresql-server-dev-all qemu-user-static whois -y
+sudo apt install git docker docker-compose curl pkg-config pandoc supervisor python-dev bison flex swig nodejs npm python3-pip virtualenv postgresql postgresql-server-dev-all qemu-user-static whois -y
  ```
 
 Clone project.
