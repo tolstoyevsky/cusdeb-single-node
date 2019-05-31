@@ -354,6 +354,26 @@ build_env() {
                     mv build/"${pieces[0]}"/chroot "${TARGET}/${pieces[0]}"
                 done
             popd
+
+            chroot_desktop=(
+                "ubuntu-bionic-arm64,xfce4,rpi-3-b"
+                "ubuntu-bionic-armhf,xfce4,rpi-3-b"
+            )
+
+            pushd "${TARGET}"/pieman
+                for chroot in "${chroot_desktop[@]}"; do
+                    IFS=',' read -r -a pieces <<< "${chroot}"
+                    env CREATE_ONLY_CHROOT=true \
+                        OS="${pieces[0]}" \ 
+                        PROJECT_NAME="${pieces[0]}-${pieces[1]}" \
+                        DEVICE="${pieces[2]}" \
+                        PYTHON="${TARGET}"/pieman-env/bin/python \
+                        INCLUDES="xfce4,xfce4-goodies,lxdm" \
+                    ./pieman.sh
+
+                    mv build/"${pieces[0]}"/chroot "${TARGET}/${pieces[0]}"
+                done
+            popd
         fi
 
         switch_state_to success
