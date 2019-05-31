@@ -361,7 +361,7 @@ build_env() {
                 for chroot in "${chroot_desktop[@]}"; do
                     IFS=',' read -r -a pieces <<< "${chroot}"
                     env CREATE_ONLY_CHROOT=true \
-                        OS="${pieces[0]}" \ 
+                        OS="${pieces[0]}" \
                         PROJECT_NAME="${pieces[0]}-${pieces[1]}" \
                         DEVICE="${pieces[2]}" \
                         PYTHON="${TARGET}"/pieman-env/bin/python \
