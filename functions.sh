@@ -270,12 +270,14 @@ build_env() {
         if [ "${how}" = "full" ]; then
             info "uploading indexes into database "
             distros=(
-                "debian,buster,armhf,http://deb.debian.org/debian/"
-                "devuan,jessie,armhf,http://auto.mirror.devuan.org/merged/"
-                "raspbian,stretch,armhf,http://archive.raspbian.org/raspbian/"
-                "ubuntu,xenial,armhf,http://ports.ubuntu.com/ubuntu-ports/"
-                "ubuntu,bionic,armhf,http://ports.ubuntu.com/ubuntu-ports/"
-                "ubuntu,bionic,arm64,http://ports.ubuntu.com/ubuntu-ports/"
+                "debian,buster,armhf,http://deb.debian.org/debian/,main"
+                "devuan,jessie,armhf,http://auto.mirror.devuan.org/merged/,main"
+                "raspbian,stretch,armhf,http://archive.raspbian.org/raspbian/,main"
+                "ubuntu,xenial,armhf,http://ports.ubuntu.com/ubuntu-ports/,main"
+                "ubuntu,bionic,armhf,http://ports.ubuntu.com/ubuntu-ports/,main"
+                "ubuntu,bionic,arm64,http://ports.ubuntu.com/ubuntu-ports/,main"
+                "ubuntu,bionic,armhf,http://ports.ubuntu.com/ubuntu-ports/,universe"
+                "ubuntu,bionic,arm64,http://ports.ubuntu.com/ubuntu-ports/,universe"
             )
 
             for distro in "${distros[@]}"; do
@@ -287,7 +289,8 @@ build_env() {
                     --distro="${pieces[0]}" \
                     --suite="${pieces[1]}" \
                     --arch="${pieces[2]}" \
-                    --mirror="${pieces[3]}"
+                    --mirror="${pieces[3]}" \
+                    --section="${pieces[4]}"
             done
         fi
 
