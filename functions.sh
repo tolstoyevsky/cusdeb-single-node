@@ -368,7 +368,7 @@ build_env() {
                         PROJECT_NAME="${pieces[0]}-${pieces[1]}" \
                         DEVICE="${pieces[2]}" \
                         PYTHON="${TARGET}"/pieman-env/bin/python \
-                        XFCE4="true" \
+                        XFCE4=true \
                     ./pieman.sh
 
                     mv build/"${pieces[0]}-${pieces[1]}"/chroot "${TARGET}/${pieces[0]}-${pieces[1]}"
