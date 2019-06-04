@@ -79,6 +79,7 @@ check_ports() {
 
 clone_git_repos() {
     local github=(
+        appleseed
         blackmagic
         django-cusdeb-firmwares
         dominion
@@ -87,7 +88,6 @@ clone_git_repos() {
         shirow
     )
     local bitbucket=(
-        appleseed
         django-cusdeb-users
         dashboard
     )
