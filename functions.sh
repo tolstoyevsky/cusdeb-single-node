@@ -18,7 +18,7 @@ check_dependencies() {
     local python_dev_installed=false
 
     for executable in "${executables[@]}"; do
-        if ! which "${executable}" > /dev/null; then
+        if ! command -v "${executable}" > /dev/null; then
             fatal "could not find ${executable}"
             exit 1
         fi
@@ -30,7 +30,7 @@ check_dependencies() {
     fi
 
     for minor_ver in "${PYTHON_DEV_MINOR_VER[@]}"; do
-        if [ ! -z "$(pkg-config --libs "python-${PYTHON_MAJOR_VER}.${minor_ver}" 2> /dev/null)" ]; then
+        if [ -n "$(pkg-config --libs "python-${PYTHON_MAJOR_VER}.${minor_ver}" 2> /dev/null)" ]; then
             python_dev_installed=true
             break
         fi
@@ -57,14 +57,14 @@ check_if_cusdeb_single_node_is_installed() {
 
 check_ports() {
     local ports=(
-        ${DASHBOARD_PORT}
-        ${BM_PORT}
-        ${DOMINION_PORT}
-        ${ORION_PORT}
-        ${MONGO_PORT}
-        ${POSGRESQL_PORT}
-        ${RABBITMQ_PORT}
-        ${REDIS_PORT}
+        "${DASHBOARD_PORT}"
+        "${BM_PORT}"
+        "${DOMINION_PORT}"
+        "${ORION_PORT}"
+        "${MONGO_PORT}"
+        "${POSGRESQL_PORT}"
+        "${RABBITMQ_PORT}"
+        "${REDIS_PORT}"
     )
 
     for port in "${ports[@]}"; do
@@ -311,7 +311,7 @@ build_env() {
 
         ;&
     node)
-        if [ -z "$(which node)" ]; then
+        if [ -z "$(command -v node)" ]; then
             info "Installing Node.js"
             node=node-v"${NODE_VER}"-linux-x64.tar.xz
             sudo -u "${USER}" curl -o "${TARGET}/${node}" https://nodejs.org/dist/v"${NODE_VER}/${node}"
