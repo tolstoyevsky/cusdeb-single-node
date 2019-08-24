@@ -206,7 +206,29 @@ migrate)
 
     ;;
 remove)
-    >&2 echo "stub"
+    check_if_cusdeb_single_node_is_installed
+
+    stop_containers
+
+    TARGET="$(<cusdeb)"
+
+    if [[ -d "${TARGET}" ]]; then
+        if [[ "$(ls -A "${TARGET}")" ]]; then
+            if prompt "Do you want to delete all contents of the directory ${TARGET}?"; then
+                for item in "${TARGET}"/*; do
+                    info "removing ${item}"
+                    rm -r "${item}"
+                done
+            fi
+        else
+            info "${TARGET} is empty"
+        fi
+    else
+        info "${TARGET} does not exist"
+    fi
+
+    rm cusdeb
+
     ;;
 restart)
     >&2 echo "stub"
