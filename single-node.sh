@@ -142,7 +142,7 @@ rebuild)
         for chroot in "${chroots[@]}"; do
             lines="$(find "$TARGET" -maxdepth 1 -name "$chroot"| wc -l)"
             if [ "$lines" -eq 0  ]; then
-                fatal "target directory do not have nessesary build - $chroot, so use full rebuild."
+                fatal "target directory does not have nessesary build - $chroot, so use full rebuild."
                 exit 1
             fi
         done
