@@ -240,7 +240,12 @@ start)
 
     ;;
 stop)
+    check_if_cusdeb_single_node_is_installed
+
     stop_containers
+
+    TARGET="$(cat cusdeb)"
+    export TARGET
 
     stop_daemons
 
