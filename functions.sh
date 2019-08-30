@@ -62,7 +62,7 @@ check_ports() {
         "${DOMINION_PORT}"
         "${ORION_PORT}"
         "${MONGO_PORT}"
-        "${POSGRESQL_PORT}"
+        "${PG_PORT}"
         "${RABBITMQ_PORT}"
         "${REDIS_PORT}"
     )
