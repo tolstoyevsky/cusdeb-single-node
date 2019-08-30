@@ -101,11 +101,6 @@ clone_git_repos() {
         info "cloning ${service}"
         sudo -u "${USER}" git clone git@bitbucket.org:cusdeb/"${service}".git "${TARGET}/${service}"
     done
-
-    # TODO: remove the following lines when the branch is merged to master.
-    pushd "${TARGET}"/orion
-        git checkout integrate-to-cusdeb
-    popd
 }
 
 comment_by_pattern() {
