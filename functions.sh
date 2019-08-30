@@ -514,7 +514,7 @@ run_daemons() {
 }
 
 stop_daemons() {
-    for pid in $(sudo supervisorctl -c ./config/supervisord.conf pid all); do
+    for pid in $(supervisorctl -c ./config/supervisord.conf pid all); do
         # If a process is stopped, supervisorctl shows that the pid of the
         # process is 0. It's not what we need.
         if [[ "${pid}" -gt 0 ]]; then
@@ -523,7 +523,7 @@ stop_daemons() {
         fi
     done
 
-    kill -9 "$(sudo supervisorctl -c ./config/supervisord.conf pid)"
+    kill -9 "$(supervisorctl -c ./config/supervisord.conf pid)"
 }
 
 switch_state_to() {
