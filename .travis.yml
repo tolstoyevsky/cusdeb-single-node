@@ -6,7 +6,7 @@ addons:
     - debian-sid
 
 before_install:
-  - sudo apt-get install -y shellcheck
+  - sudo apt-get install -y --allow-unauthenticated shellcheck
 
 script:
   - bash -c 'find . -type f -name "*.sh" | xargs shellcheck -e SC2148,SC2164 -x'
