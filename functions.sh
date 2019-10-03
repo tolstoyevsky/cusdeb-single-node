@@ -201,7 +201,7 @@ build_env() {
         info "creating virtual environments"
         create_virtenvs
 
-        switch_state_to toolset
+        switch_state_to requirements
 
         ;&
     requirements)
@@ -214,7 +214,7 @@ build_env() {
         sudo -u "${USER}" git -C "${TARGET}"/dominion checkout .
         sudo -u "${USER}" git -C "${TARGET}"/orion checkout .
 
-        switch_state_to patch
+        switch_state_to toolset
 
         ;&
     toolset)
@@ -227,7 +227,7 @@ build_env() {
             popd
         fi
 
-        switch_state_to requirements
+        switch_state_to patch
 
         ;&
     patch)
@@ -259,6 +259,8 @@ build_env() {
         if [ "${how}" = "full" ]; then
             exec_with_retries docker run -it --rm --link cusdeb-postgres:postgres -e PGPASSWORD="${PG_PASSWORD}" postgres:"${PG_TAG}" createdb -h postgres -U postgres cusdeb
         fi
+
+        switch_state_to indexes
 
         ;&
     indexes)
