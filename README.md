@@ -33,18 +33,18 @@ Script supports the following parameters:
 | Parameter    | Description |
 |------------|---------|
 | build `<target_directory>` | Setup all CusDeb services with all dependences to the `<target_directory>`. It supposed to be empty.
-| start                  | Start all services.
-| stop                   | Stop all services.
+| compilemessages        | Comlipe `.po` files to `.mo` files (see the corresponding [section](https://docs.djangoproject.com/en/2.2/ref/django-admin/#compilemessages) in the official documentation).
 | create-superuser       | Create superuser for Django admin interface (see the corresponding [section](https://docs.djangoproject.com/en/2.2/ref/django-admin/#createsuperuser) in the official documentation).
 | dbshell                | Connect to the project's database (see the corresponding [section](https://docs.djangoproject.com/en/2.2/ref/django-admin/#dbshell) in the official documentation).
 | loaddata `<fixture>`   | Read the data from the specified fixture and load it into the database (note that `<fixture>` must be a full path to the fixture file) (see the corresponding [section](https://docs.djangoproject.com/en/2.2/ref/django-admin/#loaddata) in the official documentation).
+| makemessages           | Create `.po` files from `.html`, `.py` and `.txt` files and place them in dashboard/locale for translation (see the corresponding [section](https://docs.djangoproject.com/en/2.2/ref/django-admin/#makemessages) in the official documentation).
 | makemigrations         | Generate migrations based on changes in models (see the corresponding [section](https://docs.djangoproject.com/en/2.2/ref/django-admin/#makemigrations) in the official documentation).
 | migrate                | Apply all migrations (see the corresponding [section](https://docs.djangoproject.com/en/2.2/ref/django-admin/#migrate) in the official documentation).
-| makemessages           | Create `.po` files from `.html`, `.py` and `.txt` files and place them in dashboard/locale for translation (see the corresponding [section](https://docs.djangoproject.com/en/2.2/ref/django-admin/#makemessages) in the official documentation).
-| compilemessages        | Comlipe `.po` files to `.mo` files (see the corresponding [section](https://docs.djangoproject.com/en/2.2/ref/django-admin/#compilemessages) in the official documentation).
-| shell                  | Start Python interpreter with established enviroment.
 | rebuild  [`<full>`]    | Clean the directory the CusDeb services were installed to (see the `build` command) and re-setup all the services. By default, the chroot environments will be left when cleaning the directory. If you want to re-setup not only the CusDeb services but also chroot environments, pass `full` as the first argument to `rebuild`.
 | restart                | Restart all services.
+| shell                  | Start Python interpreter with established enviroment.
+| start                  | Start all services.
+| stop                   | Stop all services.
 
 
 When you start services you can specify the ports for them via the `DASHBOARD_PORT`, `BM_PORT` and `DOMINION_PORT` environment variables. For example: 
