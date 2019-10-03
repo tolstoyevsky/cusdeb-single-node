@@ -21,9 +21,9 @@ PIP_VER=8
 
 PYTHON_MAJOR_VER=3
 
-PYTHON_MINOR_VER=5
+PYTHON_MINOR_VER=(5 6)
 
-PYTHON_DEV_MINOR_VER=(5 6 7 8)
+PYTHON_DEV_MINOR_VER=(5 6)
 
 text_in_red_color=$(tput setaf 1)
 
@@ -79,7 +79,7 @@ check_python_version() {
 
     IFS='.' read -ra current_python_version <<< "$(python3 -V | cut -d' ' -f2)"
 
-    if (("${current_python_version[0]}" >= "${PYTHON_MAJOR_VER}")) && (("${current_python_version[1]}" >= "${PYTHON_MINOR_VER}")); then
+    if [[ "${current_python_version[0]}" == "${PYTHON_MAJOR_VER}" ]] && [[ " ${PYTHON_MINOR_VER[*]} " == *" ${current_python_version[1]} "* ]]; then
         true
     else
         false

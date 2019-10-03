@@ -25,7 +25,16 @@ check_dependencies() {
     done
 
     if ! check_python_version; then
-        fatal "Python ${PYTHON_MAJOR_VER}.${PYTHON_MINOR_VER} or higher is required"
+        local python_versions=""
+
+        for v in "${PYTHON_MINOR_VER[@]}"; do
+            python_versions+="${PYTHON_MAJOR_VER}.${v}"
+            if [[ "${v}" != "${PYTHON_MINOR_VER[-1]}" ]]; then
+                python_versions+=" or "
+            fi
+        done
+
+        fatal "Python ${python_versions} is required"
         exit 1
     fi
 
