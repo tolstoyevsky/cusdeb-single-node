@@ -448,13 +448,13 @@ run_containers() {
     # MongoDB
     #
     docker pull mongo:"${MONGO_TAG}"
-    docker run --name cusdeb-mongo -v "${VOLUME_PREFIX}"/mongodb:/data/db -p "${MONGO_PORT}":27017 -d mongo:"${MONGO_TAG}"
+    docker run --name cusdeb-mongo --rm -v "${VOLUME_PREFIX}"/mongodb:/data/db -p "${MONGO_PORT}":27017 -d mongo:"${MONGO_TAG}"
     wait_for "${MONGO_PORT}"
     #
     # PostgreSQL
     #
     docker pull "postgres:${PG_TAG}"
-    docker run --name cusdeb-postgres -e POSTGRES_PASSWORD="${PG_PASSWORD}" -v "${VOLUME_PREFIX}"/postgres:/var/lib/postgresql/data -p "${PG_PORT}":5432 -d postgres:"${PG_TAG}"
+    docker run --name cusdeb-postgres --rm -e POSTGRES_PASSWORD="${PG_PASSWORD}" -v "${VOLUME_PREFIX}"/postgres:/var/lib/postgresql/data -p "${PG_PORT}":5432 -d postgres:"${PG_TAG}"
     wait_for "${PG_PORT}"
 
     #
@@ -462,14 +462,14 @@ run_containers() {
     #
 
     docker pull rabbitmq:"${RABBITMQ_TAG}"
-    docker run -d --hostname my-rabbit --name cusdeb-rabbit -e RABBITMQ_ERLANG_COOKIE='secret' -p "${RABBITMQ_PORT}":5672 rabbitmq:"${RABBITMQ_TAG}"
+    docker run -d --hostname my-rabbit --name cusdeb-rabbit --rm -e RABBITMQ_ERLANG_COOKIE='secret' -p "${RABBITMQ_PORT}":5672 rabbitmq:"${RABBITMQ_TAG}"
     wait_for "${RABBITMQ_PORT}"
 
     #
     # Redis
     #
     docker pull redis:"${REDIS_TAG}"
-    docker run --name cusdeb-redis -p "${REDIS_PORT}":6379 -d redis:"${REDIS_TAG}"
+    docker run --name cusdeb-redis --rm -p "${REDIS_PORT}":6379 -d redis:"${REDIS_TAG}"
     wait_for "${REDIS_PORT}"
 }
 
@@ -490,7 +490,6 @@ stop_container() {
     if docker ps -a | grep --quiet "${container}"; then
         info "stopping and removing container ${container}"
         docker stop "${container}"
-        docker rm "${container}"
     else
         info "container ${container} is not running"
     fi
