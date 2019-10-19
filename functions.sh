@@ -269,7 +269,7 @@ build_env() {
             distros=(
                 "debian,buster,armhf,http://deb.debian.org/debian/,main"
                 "devuan,jessie,armhf,http://auto.mirror.devuan.org/merged/,main"
-                "raspbian,stretch,armhf,http://archive.raspbian.org/raspbian/,main"
+                "raspbian,buster,armhf,http://archive.raspbian.org/raspbian/,main"
                 "ubuntu,xenial,armhf,http://ports.ubuntu.com/ubuntu-ports/,main"
                 "ubuntu,bionic,armhf,http://ports.ubuntu.com/ubuntu-ports/,main"
                 "ubuntu,bionic,arm64,http://ports.ubuntu.com/ubuntu-ports/,main"
@@ -331,7 +331,7 @@ build_env() {
             chroots=(
                 "debian-buster-armhf,opi-pc-plus"
                 "devuan-jessie-armhf,rpi-3-b"
-                "raspbian-stretch-armhf,rpi-3-b"
+                "raspbian-buster-armhf,rpi-3-b"
                 "ubuntu-xenial-armhf,rpi-2-b"
                 "ubuntu-bionic-arm64,rpi-3-b"
                 "ubuntu-bionic-armhf,rpi-3-b"

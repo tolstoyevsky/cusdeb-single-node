@@ -131,7 +131,7 @@ rebuild)
         chroots=(
                 "debian-buster-armhf"
                 "devuan-jessie-armhf"
-                "raspbian-stretch-armhf"
+                "raspbian-buster-armhf"
                 "ubuntu-xenial-armhf"
                 "ubuntu-bionic-arm64"
                 "ubuntu-bionic-armhf"
