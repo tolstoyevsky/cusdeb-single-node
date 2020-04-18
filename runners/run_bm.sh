@@ -14,8 +14,6 @@ pushd "${TARGET}/blackmagic"
         --mongodb-host="${MONGO_HOST}" \
         --mongodb-port="${MONGO_PORT}" \
         --port="${BM_PORT}" \
-        --redis-host="${REDIS_HOST}" \
-        --redis-port="${REDIS_PORT}" \
         --token-key="${TOKEN_KEY}" \
         --workspace="${TARGET}"/blackmagic-workspace \
         --logging=debug
