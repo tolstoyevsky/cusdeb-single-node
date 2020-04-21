@@ -17,7 +17,7 @@
 NODE_VER=8.12.0
 
 # shellcheck disable=SC2034
-PIP_VER=8
+PIP_VER=20.0.2
 
 PYTHON_MAJOR_VER=3
 
