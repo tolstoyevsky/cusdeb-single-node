@@ -3,10 +3,10 @@
 pushd "${TARGET}/blackmagic"
     export DJANGO_SETTINGS_MODULE=settings.prod
 
-    PYTHONPATH="${TARGET}"/django-cusdeb-firmwares:"${TARGET}"/django-cusdeb-users:"${TARGET}"/dominion:"${TARGET}"/shirow:"$(pwd)"
+    PYTHONPATH="${TARGET}"/blackmagic:"${TARGET}"/shirow:"$(pwd)"
     export PYTHONPATH
 
-    "${TARGET}"/blackmagic-env/bin/python bin/blackmagic.py \
+    "${TARGET}"/blackmagic-env/bin/python bin/server.py \
         --base-systems-path="${TARGET}" \
         --dominion-workspace="${TARGET}"/dominion-workspace \
         --log-file-prefix="${TARGET}"/blackmagic.log \
@@ -15,6 +15,5 @@ pushd "${TARGET}/blackmagic"
         --mongodb-port="${MONGO_PORT}" \
         --port="${BM_PORT}" \
         --token-key="${TOKEN_KEY}" \
-        --workspace="${TARGET}"/blackmagic-workspace \
         --logging=debug
 popd
