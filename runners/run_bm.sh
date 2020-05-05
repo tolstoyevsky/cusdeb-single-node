@@ -15,5 +15,5 @@ pushd "${TARGET}/blackmagic"
         --mongodb-port="${MONGO_PORT}" \
         --port="${BM_PORT}" \
         --token-key="${TOKEN_KEY}" \
-        --logging=debug
+        --logging=debug 2>> "${TARGET}"/blackmagic.log
 popd
