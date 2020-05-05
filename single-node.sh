@@ -135,8 +135,6 @@ rebuild)
                 "ubuntu-xenial-armhf"
                 "ubuntu-bionic-arm64"
                 "ubuntu-bionic-armhf"
-                "ubuntu-bionic-arm64-xfce4"
-                "ubuntu-bionic-armhf-xfce4"
             )
 
         for chroot in "${chroots[@]}"; do
