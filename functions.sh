@@ -57,7 +57,6 @@ check_if_cusdeb_single_node_is_installed() {
 
 check_ports() {
     local ports=(
-        "${DASHBOARD_PORT}"
         "${BM_PORT}"
         "${DOMINION_PORT}"
         "${ORION_PORT}"
@@ -81,25 +80,15 @@ clone_git_repos() {
     local github=(
         appleseed
         blackmagic
-        django-cusdeb-firmwares
         dominion
         orion
         pieman
         shirow
     )
-    local bitbucket=(
-        django-cusdeb-users
-        dashboard
-    )
 
     for service in "${github[@]}"; do
         info "cloning ${service}"
         sudo -u "${USER}" git clone https://github.com/tolstoyevsky/"${service}".git "${TARGET}/${service}"
-    done
-
-    for service in "${bitbucket[@]}"; do
-        info "cloning ${service}"
-        sudo -u "${USER}" git clone git@bitbucket.org:cusdeb/"${service}".git "${TARGET}/${service}"
     done
 }
 
@@ -123,7 +112,6 @@ create_virtenvs() {
     local envs=(
         appleseed-env
         blackmagic-env
-        dashboard-env
         dominion-env
         orion-env
         pieman-env
@@ -168,8 +156,6 @@ build_env() {
         # It's necessary to comment some dependencies, so that they would not be
         # installed to virtual environments. All the dependencies will be passed
         # through PYTHONPATH.
-        comment_by_pattern django-cusdeb-firmwares "${TARGET}"/dashboard/requirements.txt
-        comment_by_pattern django-cusdeb-users "${TARGET}"/dashboard/requirements.txt
 
         comment_by_pattern django-cusdeb-firmwares "${TARGET}"/blackmagic/requirements.txt
         comment_by_pattern django-cusdeb-users "${TARGET}"/blackmagic/requirements.txt
@@ -209,7 +195,7 @@ build_env() {
         install_requirements_to_virtenvs
 
         # Undo commenting the dependencies
-        sudo -u "${USER}" git -C "${TARGET}"/dashboard checkout .
+
         sudo -u "${USER}" git -C "${TARGET}"/blackmagic checkout .
         sudo -u "${USER}" git -C "${TARGET}"/dominion checkout .
         sudo -u "${USER}" git -C "${TARGET}"/orion checkout .
@@ -295,14 +281,7 @@ build_env() {
 
         ;&
     migrate)
-        pushd "${TARGET}"/dashboard
-            dashboard_python_path="${TARGET}/django-cusdeb-firmwares:${TARGET}/django-cusdeb-users:$(pwd)"
-            env PYTHONPATH="${dashboard_python_path}" "${TARGET}"/dashboard-env/bin/python manage.py migrate
-            env PYTHONPATH="${dashboard_python_path}" "${TARGET}"/dashboard-env/bin/python manage.py loaddata "${TARGET}"/dashboard/fixtures/account_types.json
-            env PYTHONPATH="${dashboard_python_path}" "${TARGET}"/dashboard-env/bin/python manage.py loaddata "${TARGET}"/dashboard/fixtures/buildtype.json
-            env PYTHONPATH="${dashboard_python_path}" "${TARGET}"/dashboard-env/bin/python manage.py loaddata "${TARGET}"/dashboard/fixtures/distro.json
-            env PYTHONPATH="${dashboard_python_path}" "${TARGET}"/dashboard-env/bin/python manage.py loaddata "${TARGET}"/dashboard/fixtures/targetdevice.json
-        popd
+        # TODO: invoke 'manage.py migrate' from cusdeb-api
 
         switch_state_to node
 
@@ -394,7 +373,6 @@ install_requirements_to_virtenvs() {
     services=(
         appleseed
         blackmagic
-        dashboard
         dominion
         orion
     )
@@ -405,11 +383,8 @@ install_requirements_to_virtenvs() {
         sudo -u "${USER}" "${TARGET}/${service}"-env/bin/pip install -r "${TARGET}/${service}"/requirements.txt
     done
 
-    # django-cusdeb-users is used as an external dependency for Dashboard.
-    # However, django-cusdeb-users doesn't have requirements.txt.
-    sudo -u "${USER}" "${TARGET}"/dashboard-env/bin/pip install pyjwt redis
-
     # Shirow is used as an external dependency for BlackMagic and Dominion
+
     sudo -u "${USER}" "${TARGET}"/blackmagic-env/bin/pip install -r "${TARGET}"/shirow/requirements.txt
 
     sudo -u "${USER}" "${TARGET}"/dominion-env/bin/pip install -r "${TARGET}"/shirow/requirements.txt
@@ -468,10 +443,7 @@ run_manage_py() {
 
     TARGET="$(cat cusdeb)"
 
-    pushd "${TARGET}"/dashboard
-        env PYTHONPATH="${TARGET}/django-cusdeb-firmwares:${TARGET}/django-cusdeb-users:$(pwd)" \
-            "${TARGET}"/dashboard-env/bin/python manage.py "$@"
-    popd
+    # TODO: run manage.py from cusdeb-api
 }
 
 stop_container() {
