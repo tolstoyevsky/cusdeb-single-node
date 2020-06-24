@@ -79,7 +79,7 @@ export REDIS_HOST=${REDIS_HOST=localhost}
 
 export REDIS_PORT=${REDIS_PORT:=63791}
 
-export REDIS_TAG=${REDIS_TAG:=3.2}
+export REDIS_TAG=${REDIS_TAG:=6}
 
 export TOKEN_KEY=${TOKEN_KEY:="secret"}
 
