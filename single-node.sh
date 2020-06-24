@@ -67,7 +67,7 @@ export PG_PASSWORD=${PG_PASSWORD:=secret}
 
 export PG_PORT=${PG_PORT:=54321}
 
-export PG_TAG=${PG_TAG:=9.4}
+export PG_TAG=${PG_TAG:=12}
 
 export PG_USER=${PG_USER:=postgres}
 
