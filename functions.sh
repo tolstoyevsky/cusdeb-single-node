@@ -316,6 +316,8 @@ build_env() {
                 "ubuntu-bionic-armhf,rpi-3-b"
             )
 
+            mkdir "${TARGET}"/chroots
+
             pushd "${TARGET}"/pieman
                 for chroot in "${chroots[@]}"; do
                     IFS=',' read -r -a pieces <<< "${chroot}"
@@ -327,7 +329,7 @@ build_env() {
                         PYTHON="${TARGET}"/pieman-env/bin/python \
                     ./pieman.sh
 
-                    mv build/"${pieces[0]}"/chroot "${TARGET}/${pieces[0]}"
+                    mv build/"${pieces[0]}"/chroot "${TARGET}/chroots/${pieces[0]}"
                 done
             popd
         fi
