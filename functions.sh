@@ -159,8 +159,6 @@ build_env() {
         # installed to virtual environments. All the dependencies will be passed
         # through PYTHONPATH.
 
-        comment_by_pattern django-cusdeb-firmwares "${TARGET}"/blackmagic/requirements.txt
-        comment_by_pattern django-cusdeb-users "${TARGET}"/blackmagic/requirements.txt
         comment_by_pattern dominion "${TARGET}"/blackmagic/requirements.txt
         comment_by_pattern shirow "${TARGET}"/blackmagic/requirements.txt
 
@@ -169,18 +167,6 @@ build_env() {
         comment_by_pattern shirow "${TARGET}"/dominion/requirements.txt
 
         comment_by_pattern shirow "${TARGET}"/orion/requirements.txt
-
-        pushd "${TARGET}"/blackmagic
-            cp settings/prod.py.template settings/prod.py
-            sed -i -e "s/{MONGO_DATABASE}/${MONGO_DATABASE}/" settings/prod.py
-            sed -i -e "s/{MONGO_HOST}/${MONGO_HOST}/" settings/prod.py
-            sed -i -e "s/{MONGO_PORT}/${MONGO_PORT}/" settings/prod.py
-            sed -i -e "s/{PG_DATABASE}/${PG_DATABASE}/" settings/prod.py
-            sed -i -e "s/{PG_HOST}/${PG_HOST}/" settings/prod.py
-            sed -i -e "s/{PG_PASSWORD}/${PG_PASSWORD}/" settings/prod.py
-            sed -i -e "s/{PG_PORT}/${PG_PORT}/" settings/prod.py
-            sed -i -e "s/{PG_USER}/${PG_USER}/" settings/prod.py
-        popd
 
         switch_state_to virtenv
 
