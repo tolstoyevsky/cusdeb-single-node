@@ -78,17 +78,19 @@ check_ports() {
 
 clone_git_repos() {
     local github=(
-        appleseed
-        blackmagic
-        dominion
-        orion
-        pieman
-        shirow
+        appleseed,master
+        blackmagic,ng
+        dominion,master
+        orion,master
+        pieman,master
+        shirow,ng
     )
 
     for service in "${github[@]}"; do
-        info "cloning ${service}"
-        sudo -u "${USER}" git clone https://github.com/tolstoyevsky/"${service}".git "${TARGET}/${service}"
+        IFS=',' read -r -a pieces <<< "${service}"
+
+        info "cloning ${pieces[0]}"
+        sudo -u "${USER}" git clone -b "${pieces[1]}" https://github.com/tolstoyevsky/"${pieces[0]}".git "${TARGET}/${pieces[0]}"
     done
 }
 
