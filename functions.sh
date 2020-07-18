@@ -116,13 +116,19 @@ create_virtenvs() {
         blackmagic-env
         dominion-env
         orion-env
-        pieman-env
     )
 
     for env in "${envs[@]}"; do
         info "creating ${env} virtual environment"
         sudo -u "${USER}" virtualenv -p python3 "${TARGET}/${env}"
     done
+
+    # The Pieman virtual environment is called venv and must be in the Pieman
+    # root source tree.
+    pushd "${TARGET}/pieman"
+        info "creating pieman/venv virtual environment"
+        sudo -u "${USER}" virtualenv -p python3 venv
+    popd
 }
 
 build_env() {
@@ -197,7 +203,7 @@ build_env() {
         if [ "${how}" = "full" ]; then
             info "setting up toolset"
             pushd "${TARGET}"/pieman
-                env PREPARE_ONLY_TOOLSET=true PYTHON="${TARGET}"/pieman-env/bin/python ./pieman.sh
+                env PREPARE_ONLY_TOOLSET=true ./pieman.sh
             popd
         fi
 
@@ -381,13 +387,8 @@ install_requirements_to_virtenvs() {
 
     sudo -u "${USER}" "${TARGET}"/orion-env/bin/pip install -r "${TARGET}"/shirow/requirements.txt
 
-    info "installing requirements to pieman-env"
-    sudo -u "${USER}" "${TARGET}"/pieman-env/bin/pip install -r "${TARGET}"/pieman/pieman/requirements.txt
-
-    pushd "${TARGET}"/pieman/pieman
-        sudo -u "${USER}" "${TARGET}"/pieman-env/bin/python setup.py build
-        sudo -u "${USER}" "${TARGET}"/pieman-env/bin/python setup.py install
-    popd
+    info "installing requirements to pieman/venv"
+    sudo -u "${USER}" "${TARGET}"/pieman/venv/bin/pip install pieman
 }
 
 run_containers() {
