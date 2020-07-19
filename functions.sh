@@ -285,7 +285,7 @@ build_env() {
             info "Installing Node.js"
             node=node-v"${NODE_VER}"-linux-x64.tar.xz
             sudo -u "${USER}" curl -o "${TARGET}/${node}" https://nodejs.org/dist/v"${NODE_VER}/${node}"
-            sudo -u "${USER}" tar xJvf "${TARGET}/${node}" -C "${TARGET}"
+            sudo -u "${USER}" tar xJf "${TARGET}/${node}" -C "${TARGET}"
             tar=${node%.*}
             dir=${tar%.*}
             sudo -u "${USER}" mv "${TARGET}"/"${dir}" "${TARGET}"/node
