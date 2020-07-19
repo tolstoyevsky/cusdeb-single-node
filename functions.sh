@@ -248,7 +248,6 @@ build_env() {
             info "uploading indexes into database "
             distros=(
                 "debian,buster,armhf,http://deb.debian.org/debian/,main"
-                "devuan,jessie,armhf,http://auto.mirror.devuan.org/merged/,main"
                 "raspbian,buster,armhf,http://archive.raspbian.org/raspbian/,main"
                 "ubuntu,xenial,armhf,http://ports.ubuntu.com/ubuntu-ports/,main"
                 "ubuntu,bionic,armhf,http://ports.ubuntu.com/ubuntu-ports/,main"
