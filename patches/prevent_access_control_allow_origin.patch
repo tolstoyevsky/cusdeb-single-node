@@ -1,6 +1,6 @@
---- websocket.py	2018-09-20 01:12:58.620624233 +0300
-+++ websocket.py	2018-09-20 01:13:13.157346647 +0300
-@@ -184,12 +184,12 @@
+--- websocket.py	2020-07-19 13:27:50.678104639 +0300
++++ websocket.py	2020-07-19 17:18:16.399463663 +0300
+@@ -266,12 +266,12 @@
          # If there was an origin header, check to make sure it matches
          # according to check_origin. When the origin is None, we assume it
          # did not come from a browser and that it can be passed on.
