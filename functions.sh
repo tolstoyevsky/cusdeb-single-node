@@ -398,7 +398,7 @@ run_containers() {
     if ! docker images mongo:"${MONGO_TAG}" | grep -q mongo; then
         docker pull mongo:"${MONGO_TAG}"
     fi
-    docker run --name cusdeb-mongo --rm -v "${VOLUME_PREFIX}"/mongodb:/data/db -p "${MONGO_PORT}":27017 -d mongo:"${MONGO_TAG}"
+    docker run --name cusdeb-mongo --rm -v "${TARGET}"/_mongodb:/data/db -p "${MONGO_PORT}":27017 -d mongo:"${MONGO_TAG}"
     wait_for "${MONGO_PORT}"
     #
     # PostgreSQL
@@ -406,7 +406,7 @@ run_containers() {
     if ! docker images "postgres:${PG_TAG}" | grep -q postgres; then
         docker pull "postgres:${PG_TAG}"
     fi
-    docker run --name cusdeb-postgres --rm -e POSTGRES_PASSWORD="${PG_PASSWORD}" -v "${VOLUME_PREFIX}"/postgres:/var/lib/postgresql/data -p "${PG_PORT}":5432 -d postgres:"${PG_TAG}"
+    docker run --name cusdeb-postgres --rm -e POSTGRES_PASSWORD="${PG_PASSWORD}" -v "${TARGET}"/_postgres:/var/lib/postgresql/data -p "${PG_PORT}":5432 -d postgres:"${PG_TAG}"
     wait_for "${PG_PORT}"
 
     #

@@ -82,8 +82,6 @@ export TOKEN_KEY=${TOKEN_KEY:="secret"}
 USER="$(get_owner .)"
 export USER
 
-export VOLUME_PREFIX=${VOLUME_PREFIX:=/srv}
-
 set +x
 
 info "checking dependencies"

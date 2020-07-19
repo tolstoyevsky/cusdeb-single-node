@@ -57,16 +57,6 @@ Default ports are:
 | [Dominion](https://github.com/tolstoyevsky/dominion)      | 8003    |
 | [Orion](https://github.com/tolstoyevsky/orion)            | 8004    |
 
-## Troubleshooting
-
-If you executed the `start` command and encountered the following error
-
-```
-docker: Error response from daemon: error while creating mount source path '/srv/mongodb': mkdir /srv/mongodb: read-only file system.
-```
-
-try to change the default value of the `VOLUME_PREFIX` environment variable.
-
 ## Authors
 
 See [AUTHORS](https://github.com/tolstoyevsky/cusdeb-single-node/blob/master/AUTHORS.md).
