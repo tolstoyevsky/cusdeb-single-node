@@ -78,7 +78,7 @@ check_ports() {
 
 clone_git_repos() {
     local github=(
-        appleseed,master
+        appleseed,ng
         blackmagic,ng
         dominion,master
         orion,master
