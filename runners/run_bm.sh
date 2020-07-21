@@ -1,8 +1,6 @@
 #!/bin/bash
 
 pushd "${TARGET}/blackmagic"
-    export DJANGO_SETTINGS_MODULE=settings.prod
-
     PYTHONPATH="${TARGET}"/blackmagic:"${TARGET}"/shirow:"$(pwd)"
     export PYTHONPATH
 
