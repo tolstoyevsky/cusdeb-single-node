@@ -77,7 +77,7 @@ export REDIS_PORT=${REDIS_PORT:=63791}
 
 export REDIS_TAG=${REDIS_TAG:=6}
 
-export TOKEN_KEY=${TOKEN_KEY:="secret"}
+export SECRET_KEY=${SECRET_KEY:="secret"}
 
 USER="$(get_owner .)"
 export USER
