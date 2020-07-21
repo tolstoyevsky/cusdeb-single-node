@@ -300,29 +300,29 @@ build_env() {
         if [ "${how}" = "full" ]; then
             info "creating chroots environments"
 
-            chroots=(
-                "debian-buster-armhf,opi-pc-plus"
-                "devuan-jessie-armhf,rpi-3-b"
-                "raspbian-buster-armhf,rpi-3-b"
-                "ubuntu-xenial-armhf,rpi-2-b"
-                "ubuntu-bionic-arm64,rpi-3-b"
-                "ubuntu-bionic-armhf,rpi-3-b"
-            )
+            mkdir -p "${TARGET}"/chroots
 
-            mkdir "${TARGET}"/chroots
+            OS=()
 
             pushd "${TARGET}"/pieman
-                for chroot in "${chroots[@]}"; do
-                    IFS=',' read -r -a pieces <<< "${chroot}"
+                for device in $(ls devices); do
+                    for os in $(ls "devices/${device}"); do
+                        if [[ " ${OS[*]} " =~ " ${os} " ]]; then
+                            continue
+                        fi
 
-                    env CREATE_ONLY_CHROOT=true \
-                        OS="${pieces[0]}" \
-                        PROJECT_NAME="${pieces[0]}" \
-                        DEVICE="${pieces[1]}" \
-                        PYTHON="${TARGET}"/pieman-env/bin/python \
-                    ./pieman.sh
+                        if [[ -d "build/${os}" ]]; then
+                            continue
+                        fi
 
-                    mv build/"${pieces[0]}"/chroot "${TARGET}/chroots/${pieces[0]}"
+                        OS+=("${os}")
+
+                        if ! env CREATE_ONLY_CHROOT=true OS="${os}" PROJECT_NAME="${os}" DEVICE="${device}" ./pieman.sh; then
+                            rm -r build/"${os}"
+                        fi
+
+                        mv build/"${os}"/chroot "${TARGET}/chroots/${os}"
+                    done
                 done
             popd
         fi
