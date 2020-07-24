@@ -121,23 +121,6 @@ rebuild)
 
     if [ -z "$2" ]; then
         recipe=fast
-
-        chroots=(
-                "debian-buster-armhf"
-                "devuan-jessie-armhf"
-                "raspbian-buster-armhf"
-                "ubuntu-xenial-armhf"
-                "ubuntu-bionic-arm64"
-                "ubuntu-bionic-armhf"
-            )
-
-        for chroot in "${chroots[@]}"; do
-            lines="$(find "$TARGET" -maxdepth 1 -name "$chroot"| wc -l)"
-            if [ "$lines" -eq 0  ]; then
-                fatal "target directory does not have nessesary build - $chroot, so use full rebuild."
-                exit 1
-            fi
-        done
     else
         recipe="$2"
     fi
@@ -151,14 +134,7 @@ rebuild)
         case $recipe in
         fast)
             pushd "$TARGET"
-                to_be_deleted="$(find . -maxdepth 1 ! -name '*arm64' ! -name '*armhf' ! -name '*.')"
-
-                # shellcheck disable=SC2068
-                for item in ${to_be_deleted[@]}; do
-                    if [ ! "$item" = "" ]; then
-                        rm -r "$item"
-                    fi
-                done
+                find . -maxdepth 1 ! -name 'chroots' ! -name '.' ! -name '..' -exec rm -r {} \;
             popd
             ;;
         full)
