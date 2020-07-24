@@ -297,35 +297,42 @@ build_env() {
 
         ;&
     chroots)
-        if [ "${how}" = "full" ]; then
-            info "creating chroots environments"
+        info "creating chroots environments"
 
-            mkdir -p "${TARGET}"/chroots
+        mkdir -p "${TARGET}"/chroots
 
-            OS=()
-
-            pushd "${TARGET}"/pieman
-                for device in $(ls devices); do
-                    for os in $(ls "devices/${device}"); do
-                        if [[ " ${OS[*]} " =~ " ${os} " ]]; then
-                            continue
-                        fi
-
-                        if [[ -d "build/${os}" ]]; then
-                            continue
-                        fi
-
-                        OS+=("${os}")
-
-                        if ! env CREATE_ONLY_CHROOT=true OS="${os}" PROJECT_NAME="${os}" DEVICE="${device}" ./pieman.sh; then
-                            rm -r build/"${os}"
-                        fi
-
-                        mv build/"${os}"/chroot "${TARGET}/chroots/${os}"
-                    done
-                done
+        if [[ "${how}" == "fast" ]]; then
+            pushd "${TARGET}/chroots"
+                mkdir "${TARGET}"/pieman/build
+                # Create empty directories with chroots names in pieman/build
+                # to skip creating those chroots which has already been created.
+                find . -maxdepth 1 ! -name 'chroots' ! -name '.' ! -name '..' -exec mkdir "${TARGET}"/pieman/build/{} \;
             popd
         fi
+
+        OS=()
+
+        pushd "${TARGET}"/pieman
+            for device in $(ls devices); do
+                for os in $(ls "devices/${device}"); do
+                    if [[ " ${OS[*]} " =~ " ${os} " ]]; then
+                        continue
+                    fi
+
+                    if [[ -d "build/${os}" ]]; then
+                        continue
+                    fi
+
+                    OS+=("${os}")
+
+                    if ! env CREATE_ONLY_CHROOT=true OS="${os}" PROJECT_NAME="${os}" DEVICE="${device}" ./pieman.sh; then
+                        rm -r build/"${os}"
+                    fi
+
+                    mv build/"${os}"/chroot "${TARGET}/chroots/${os}"
+                done
+            done
+        popd
 
         switch_state_to success
 
