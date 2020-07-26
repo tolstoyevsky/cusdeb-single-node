@@ -200,12 +200,9 @@ build_env() {
     toolset)
         info "building Pieman toolset"
 
-        if [ "${how}" = "full" ]; then
-            info "setting up toolset"
-            pushd "${TARGET}"/pieman
-                env PREPARE_ONLY_TOOLSET=true ./pieman.sh
-            popd
-        fi
+        pushd "${TARGET}"/pieman
+            env PREPARE_ONLY_TOOLSET=true ./pieman.sh
+        popd
 
         switch_state_to patch
 
