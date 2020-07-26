@@ -280,18 +280,14 @@ build_env() {
 
         ;&
     node)
-        if [ -z "$(command -v node)" ]; then
-            info "Installing Node.js"
-            node=node-v"${NODE_VER}"-linux-x64.tar.xz
-            sudo -u "${USER}" curl -o "${TARGET}/${node}" https://nodejs.org/dist/v"${NODE_VER}/${node}"
-            sudo -u "${USER}" tar xJf "${TARGET}/${node}" -C "${TARGET}"
-            tar=${node%.*}
-            dir=${tar%.*}
-            sudo -u "${USER}" mv "${TARGET}"/"${dir}" "${TARGET}"/node
-            sudo -u "${USER}" rm "${TARGET}"/"${node}"
-        else
-            info "Node.js is already installed"
-        fi
+        info "Installing Node.js"
+        node=node-v"${NODE_VER}"-linux-x64.tar.xz
+        sudo -u "${USER}" curl -o "${TARGET}/${node}" https://nodejs.org/dist/v"${NODE_VER}/${node}"
+        sudo -u "${USER}" tar xJf "${TARGET}/${node}" -C "${TARGET}"
+        tar=${node%.*}
+        dir=${tar%.*}
+        sudo -u "${USER}" mv "${TARGET}"/"${dir}" "${TARGET}"/node
+        sudo -u "${USER}" rm "${TARGET}"/"${node}"
 
         switch_state_to chroots
 
