@@ -313,24 +313,26 @@ build_env() {
         OS=()
 
         pushd "${TARGET}"/pieman
-            for device in $(ls devices); do
-                for os in $(ls "devices/${device}"); do
-                    if [[ " ${OS[*]} " =~ " ${os} " ]]; then
-                        continue
-                    fi
+            for device_os in devices/*/*; do
+                IFS='/' read -r -a pieces <<< "${device_os}"
+                os="${pieces[-1]}"
+                device="${pieces[-2]}"
 
-                    if [[ -d "build/${os}" ]]; then
-                        continue
-                    fi
+                if [[ " ${OS[*]} " =~ " ${os} " ]]; then
+                    continue
+                fi
 
-                    OS+=("${os}")
+                if [[ -d "build/${os}" ]]; then
+                    continue
+                fi
 
-                    if ! env CREATE_ONLY_CHROOT=true OS="${os}" PROJECT_NAME="${os}" DEVICE="${device}" ./pieman.sh; then
-                        rm -r build/"${os}"
-                    fi
+                OS+=("${os}")
 
-                    mv build/"${os}"/chroot "${TARGET}/chroots/${os}"
-                done
+                if ! env CREATE_ONLY_CHROOT=true OS="${os}" PROJECT_NAME="${os}" DEVICE="${device}" ./pieman.sh; then
+                    rm -r build/"${os}"
+                fi
+
+                mv build/"${os}"/chroot "${TARGET}/chroots/${os}"
             done
         popd
 
