@@ -318,6 +318,7 @@ build_env() {
                 os="${pieces[-1]}"
                 device="${pieces[-2]}"
 
+                # shellcheck disable=SC2076
                 if [[ " ${OS[*]} " =~ " ${os} " ]]; then
                     continue
                 fi
