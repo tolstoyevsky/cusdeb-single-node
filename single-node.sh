@@ -41,6 +41,8 @@ set -x
 
 export HOST=${HOST:=localhost}
 
+export CUSDEB_API_PORT=${CUSDEB_API_PORT:=8001}
+
 export BM_PORT=${BM_PORT:=8002}
 
 export DOMINION_PORT=${DOMINION_PORT:=8003}

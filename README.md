@@ -53,6 +53,7 @@ Default ports are:
 
 | Service                                                   | Default |
 |-----------------------------------------------------------|---------|
+| [CusDeb API](https://github.com/tolstoyevsky/cusdeb-api)  | 8001    |
 | [Black Magic](https://github.com/tolstoyevsky/blackmagic) | 8002    |
 | [Dominion](https://github.com/tolstoyevsky/dominion)      | 8003    |
 | [Orion](https://github.com/tolstoyevsky/orion)            | 8004    |

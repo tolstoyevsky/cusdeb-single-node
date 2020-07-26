@@ -57,6 +57,7 @@ check_if_cusdeb_single_node_is_installed() {
 
 check_ports() {
     local ports=(
+        "${CUSDEB_API_PORT}"
         "${BM_PORT}"
         "${DOMINION_PORT}"
         "${ORION_PORT}"
@@ -80,6 +81,7 @@ clone_git_repos() {
     local github=(
         appleseed,ng
         blackmagic,ng
+        cusdeb-api,master
         dominion,master
         orion,master
         pieman,master
@@ -114,6 +116,7 @@ create_virtenvs() {
     local envs=(
         appleseed-env
         blackmagic-env
+        cusdeb-api-env
         dominion-env
         orion-env
     )
@@ -371,6 +374,7 @@ install_requirements_to_virtenvs() {
     services=(
         appleseed
         blackmagic
+        cusdeb-api
         dominion
         orion
     )
