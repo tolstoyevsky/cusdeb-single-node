@@ -14,7 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # shellcheck disable=SC2034
-NODE_VER=8.12.0
+NODE_VER=12.18.3
 
 # shellcheck disable=SC2034
 PIP_VER=20.0.2
