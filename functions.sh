@@ -240,9 +240,7 @@ build_env() {
 
         run_containers
 
-        if [ "${how}" = "full" ]; then
-            exec_with_retries docker run -it --rm --link cusdeb-postgres:postgres -e PGPASSWORD="${PG_PASSWORD}" postgres:"${PG_TAG}" createdb -h postgres -U postgres cusdeb
-        fi
+        exec_with_retries docker run -it --rm --link cusdeb-postgres:postgres -e PGPASSWORD="${PG_PASSWORD}" postgres:"${PG_TAG}" createdb -h postgres -U postgres cusdeb
 
         switch_state_to indexes
 
