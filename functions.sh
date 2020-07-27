@@ -112,6 +112,11 @@ comment_by_pattern() {
     mv "${f}.copy" "${f}"
 }
 
+create_virtenv() {
+    local virtenv=$1
+    exec_cmd virtualenv -ppython3 "${virtenv}"
+}
+
 create_virtenvs() {
     local envs=(
         appleseed-env
@@ -122,15 +127,14 @@ create_virtenvs() {
     )
 
     for env in "${envs[@]}"; do
-        info "creating ${env} virtual environment"
-        sudo -u "${USER}" virtualenv -p python3 "${TARGET}/${env}"
+        create_virtenv "${TARGET}/${env}"
     done
 
     # The Pieman virtual environment is called venv and must be in the Pieman
     # root source tree.
     pushd "${TARGET}/pieman"
         info "creating pieman/venv virtual environment"
-        sudo -u "${USER}" virtualenv -p python3 venv
+        create_virtenv venv
     popd
 }
 
@@ -204,7 +208,7 @@ build_env() {
         info "building Pieman toolset"
 
         pushd "${TARGET}"/pieman
-            env PREPARE_ONLY_TOOLSET=true ./pieman.sh
+            env PATH="${PATH}" LD_LIBRARY_PATH="${LD_LIBRARY_PATH}" PREPARE_ONLY_TOOLSET=true ./pieman.sh
         popd
 
         switch_state_to patch
@@ -381,20 +385,20 @@ install_requirements_to_virtenvs() {
 
     for service in "${services[@]}"; do
         info "installing requirements to ${service}-env"
-        sudo -u "${USER}" "${TARGET}/${service}"-env/bin/pip install pip=="${PIP_VER}"
-        sudo -u "${USER}" "${TARGET}/${service}"-env/bin/pip install -r "${TARGET}/${service}"/requirements.txt
+        exec_cmd "${TARGET}/${service}"-env/bin/pip install pip=="${PIP_VER}"
+        exec_cmd "${TARGET}/${service}"-env/bin/pip install -r "${TARGET}/${service}"/requirements.txt
     done
 
     # Shirow is used as an external dependency for BlackMagic and Dominion
 
-    sudo -u "${USER}" "${TARGET}"/blackmagic-env/bin/pip install -r "${TARGET}"/shirow/requirements.txt
+    exec_cmd "${TARGET}"/blackmagic-env/bin/pip install -r "${TARGET}"/shirow/requirements.txt
 
-    sudo -u "${USER}" "${TARGET}"/dominion-env/bin/pip install -r "${TARGET}"/shirow/requirements.txt
+    exec_cmd "${TARGET}"/dominion-env/bin/pip install -r "${TARGET}"/shirow/requirements.txt
 
-    sudo -u "${USER}" "${TARGET}"/orion-env/bin/pip install -r "${TARGET}"/shirow/requirements.txt
+    exec_cmd "${TARGET}"/orion-env/bin/pip install -r "${TARGET}"/shirow/requirements.txt
 
     info "installing requirements to pieman/venv"
-    sudo -u "${USER}" "${TARGET}"/pieman/venv/bin/pip install pieman
+    exec_cmd "${TARGET}"/pieman/venv/bin/pip install pieman
 }
 
 run_containers() {
