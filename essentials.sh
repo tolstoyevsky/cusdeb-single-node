@@ -96,6 +96,10 @@ exec_with_retries() {
     done
 }
 
+exec_cmd() {
+    sudo -u "${USER}" env PATH="${PATH}" LD_LIBRARY_PATH="${LD_LIBRARY_PATH}" "$@"
+}
+
 get_absolute_path() {
     readlink -f "$1"
 }
