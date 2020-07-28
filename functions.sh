@@ -57,6 +57,7 @@ check_if_cusdeb_single_node_is_installed() {
 
 check_ports() {
     local ports=(
+        "${CUSDEB_WEB_CLIENT_PORT}"
         "${CUSDEB_API_PORT}"
         "${BM_PORT}"
         "${DOMINION_PORT}"
@@ -82,6 +83,7 @@ clone_git_repos() {
         appleseed,ng
         blackmagic,ng
         cusdeb-api,master
+        cusdeb-web-client,master
         dominion,master
         orion,master
         pieman,master
