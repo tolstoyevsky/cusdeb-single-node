@@ -183,6 +183,19 @@ build_env() {
 
         comment_by_pattern shirow "${TARGET}"/orion/requirements.txt
 
+        switch_state_to node
+
+        ;&
+    node)
+        info "Installing Node.js"
+        node=node-v"${NODE_VER}"-linux-x64.tar.xz
+        sudo -u "${USER}" curl -o "${TARGET}/${node}" https://nodejs.org/dist/v"${NODE_VER}/${node}"
+        sudo -u "${USER}" tar xJf "${TARGET}/${node}" -C "${TARGET}"
+        tar=${node%.*}
+        dir=${tar%.*}
+        sudo -u "${USER}" mv "${TARGET}"/"${dir}" "${TARGET}"/node
+        sudo -u "${USER}" rm "${TARGET}"/"${node}"
+
         switch_state_to virtenv
 
         ;&
@@ -194,6 +207,11 @@ build_env() {
 
         ;&
     requirements)
+        info "installing requirements to ${TARGET}/cusdeb-web-client/node_modules"
+        pushd "${TARGET}"/cusdeb-web-client
+            run_npm install
+        popd
+
         info "installing requirements to virtual environments"
         install_requirements_to_virtenvs
 
@@ -279,19 +297,6 @@ build_env() {
         ;&
     migrate)
         run_manage_py migrate
-
-        switch_state_to node
-
-        ;&
-    node)
-        info "Installing Node.js"
-        node=node-v"${NODE_VER}"-linux-x64.tar.xz
-        sudo -u "${USER}" curl -o "${TARGET}/${node}" https://nodejs.org/dist/v"${NODE_VER}/${node}"
-        sudo -u "${USER}" tar xJf "${TARGET}/${node}" -C "${TARGET}"
-        tar=${node%.*}
-        dir=${tar%.*}
-        sudo -u "${USER}" mv "${TARGET}"/"${dir}" "${TARGET}"/node
-        sudo -u "${USER}" rm "${TARGET}"/"${node}"
 
         switch_state_to chroots
 
@@ -447,6 +452,10 @@ run_manage_py() {
     pushd "${TARGET}"/cusdeb-api
         env PATH="${PATH}" LD_LIBRARY_PATH="${LD_LIBRARY_PATH}" "${TARGET}"/cusdeb-api-env/bin/python manage.py "$@"
     popd
+}
+
+run_npm() {
+    sudo -u "${USER}" sh -c "env PATH=${TARGET}/node/bin:${PATH} NODE_PATH=${TARGET}/node/lib/node_modules npm $*"
 }
 
 stop_container() {
