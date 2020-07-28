@@ -228,6 +228,8 @@ start)
     run_containers
     trap "stop_containers && exit 130" 2
 
+    print_doc
+
     run_daemons
 
     ;;
