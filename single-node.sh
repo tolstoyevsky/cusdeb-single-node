@@ -57,7 +57,7 @@ export MONGO_PORT=${MONGO_PORT:=33018}
 
 export MONGO_TAG=${MONGO_TAG:=3.2}
 
-export PG_DATABASE=${PG_DATABASE:=cusdeb}
+export PG_NAME=${PG_NAME:=cusdeb}
 
 export PG_HOST=${PG_HOST:=localhost}
 
