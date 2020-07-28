@@ -473,6 +473,21 @@ run_daemons() {
     env PATH="${TARGET}/dominion-dev/bin:$(pwd)/runners:${PATH}" supervisord -c config/supervisord.conf
 }
 
+print_doc() {
+    >&2 echo
+    >&2 echo "  The CusDeb services are being started..."
+    >&2 echo "  See the logs of the services for more information:"
+    >&2 echo "  * Black Magic: ${TARGET}/blackmagic.log"
+    >&2 echo "  * CusDeb API: ${TARGET}/cusdeb-api.log"
+    >&2 echo
+    >&2 echo "  Note that some error logs are written to cusdeb-api.log only"
+    >&2 echo "  after stopping the cusdeb-api service, so if it malfunctions"
+    >&2 echo "  for some reason, press CTRL-C to stop cusdeb-single-node"
+    >&2 echo "  along with cusdeb-api and other services, and see"
+    >&2 echo "  cusdeb-api.log for details."
+    >&2 echo
+}
+
 stop_daemons() {
     for pid in $(supervisorctl -c ./config/supervisord.conf pid all); do
         # If a process is stopped, supervisorctl shows that the pid of the
