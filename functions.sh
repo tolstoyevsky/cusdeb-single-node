@@ -276,7 +276,7 @@ build_env() {
 
         ;&
     migrate)
-        # TODO: invoke 'manage.py migrate' from cusdeb-api
+        run_manage_py migrate
 
         switch_state_to node
 
@@ -442,7 +442,9 @@ run_manage_py() {
 
     TARGET="$(cat cusdeb)"
 
-    # TODO: run manage.py from cusdeb-api
+    pushd "${TARGET}"/cusdeb-api
+        env PATH="${PATH}" LD_LIBRARY_PATH="${LD_LIBRARY_PATH}" "${TARGET}"/cusdeb-api-env/bin/python manage.py "$@"
+    popd
 }
 
 stop_container() {
