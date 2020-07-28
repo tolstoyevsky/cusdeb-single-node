@@ -41,6 +41,8 @@ set -x
 
 export HOST=${HOST:=localhost}
 
+export CUSDEB_WEB_CLIENT_PORT=${CUSDEB_WEB_CLIENT_PORT:=8000}
+
 export CUSDEB_API_PORT=${CUSDEB_API_PORT:=8001}
 
 export BM_PORT=${BM_PORT:=8002}
