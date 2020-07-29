@@ -298,6 +298,12 @@ build_env() {
     migrate)
         run_manage_py migrate
 
+        switch_state_to loaddata
+
+        ;&
+    loaddata)
+        run_manage_py loaddata "${TARGET}/cusdeb-api/fixtures/images.json"
+
         switch_state_to chroots
 
         ;&
