@@ -270,6 +270,7 @@ build_env() {
 
         info "uploading indexes into database"
         distros=(
+            "alpine,3.12,armhf,http://dl-cdn.alpinelinux.org/alpine/,main"
             "debian,buster,armhf,http://deb.debian.org/debian/,main"
             "raspbian,buster,armhf,http://archive.raspbian.org/raspbian/,main"
             "ubuntu,xenial,armhf,http://ports.ubuntu.com/ubuntu-ports/,main"
