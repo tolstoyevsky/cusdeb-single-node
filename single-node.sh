@@ -39,7 +39,7 @@ fi
 
 set -x
 
-export ALLOWED_HOSTS=${ALLOWED_HOSTS:=localhost}
+export ALLOWED_HOSTS=${ALLOWED_HOSTS:=localhost,127.0.0.1}
 
 export CUSDEB_WEB_CLIENT_PORT=${CUSDEB_WEB_CLIENT_PORT:=8000}
 
