@@ -268,31 +268,29 @@ build_env() {
     indexes)
         cp /usr/lib/python3/dist-packages/apt_pkg*.so "${TARGET}"/appleseed/appleseed/apt_pkg.so
 
-        if [ "${how}" = "full" ]; then
-            info "uploading indexes into database "
-            distros=(
-                "debian,buster,armhf,http://deb.debian.org/debian/,main"
-                "raspbian,buster,armhf,http://archive.raspbian.org/raspbian/,main"
-                "ubuntu,xenial,armhf,http://ports.ubuntu.com/ubuntu-ports/,main"
-                "ubuntu,bionic,armhf,http://ports.ubuntu.com/ubuntu-ports/,main"
-                "ubuntu,bionic,arm64,http://ports.ubuntu.com/ubuntu-ports/,main"
-                "ubuntu,bionic,armhf,http://ports.ubuntu.com/ubuntu-ports/,universe"
-                "ubuntu,bionic,arm64,http://ports.ubuntu.com/ubuntu-ports/,universe"
-            )
+        info "uploading indexes into database"
+        distros=(
+            "debian,buster,armhf,http://deb.debian.org/debian/,main"
+            "raspbian,buster,armhf,http://archive.raspbian.org/raspbian/,main"
+            "ubuntu,xenial,armhf,http://ports.ubuntu.com/ubuntu-ports/,main"
+            "ubuntu,bionic,armhf,http://ports.ubuntu.com/ubuntu-ports/,main"
+            "ubuntu,bionic,arm64,http://ports.ubuntu.com/ubuntu-ports/,main"
+            "ubuntu,bionic,armhf,http://ports.ubuntu.com/ubuntu-ports/,universe"
+            "ubuntu,bionic,arm64,http://ports.ubuntu.com/ubuntu-ports/,universe"
+        )
 
-            for distro in "${distros[@]}"; do
-                IFS=',' read -r -a pieces <<< "${distro}"
+        for distro in "${distros[@]}"; do
+            IFS=',' read -r -a pieces <<< "${distro}"
 
-                env PYTHONPATH="${TARGET}"/appleseed "${TARGET}"/appleseed-env/bin/python "${TARGET}"/appleseed/bin/index_file.py \
-                    --mongodb-host="${MONGO_HOST}" \
-                    --mongodb-port="${MONGO_PORT}" \
-                    --distro="${pieces[0]}" \
-                    --suite="${pieces[1]}" \
-                    --arch="${pieces[2]}" \
-                    --mirror="${pieces[3]}" \
-                    --section="${pieces[4]}"
-            done
-        fi
+            env PYTHONPATH="${TARGET}"/appleseed "${TARGET}"/appleseed-env/bin/python "${TARGET}"/appleseed/bin/index_file.py \
+                --mongodb-host="${MONGO_HOST}" \
+                --mongodb-port="${MONGO_PORT}" \
+                --distro="${pieces[0]}" \
+                --suite="${pieces[1]}" \
+                --arch="${pieces[2]}" \
+                --mirror="${pieces[3]}" \
+                --section="${pieces[4]}"
+        done
 
         switch_state_to migrate
 
