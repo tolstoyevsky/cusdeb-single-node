@@ -129,25 +129,23 @@ rebuild)
         recipe="$2"
     fi
 
-    resume_state
+    switch_state_to init
     state="$(get_state)"
 
-    if [ "${state}" = "init" ] || [ "${state}" = "clone" ]; then
-        info "cleaning up"
+    info "cleaning up"
 
-        case $recipe in
-        fast)
-            pushd "$TARGET"
-                find . -maxdepth 1 ! -name 'chroots' ! -name '.' ! -name '..' -exec rm -r {} \;
-            popd
-            ;;
-        full)
-            if [ "$(ls -A "$TARGET")" ]; then
-                # shellcheck disable=SC2115
-                rm -r "$TARGET"/*
-            fi
-        esac
-    fi
+    case $recipe in
+    fast)
+        pushd "$TARGET"
+            find . -maxdepth 1 ! -name 'chroots' ! -name '.' ! -name '..' -exec rm -r {} \;
+        popd
+        ;;
+    full)
+        if [ "$(ls -A "$TARGET")" ]; then
+            # shellcheck disable=SC2115
+            rm -r "$TARGET"/*
+        fi
+    esac
 
     build_env "$state" "$recipe"
 
