@@ -266,6 +266,8 @@ build_env() {
 
         ;&
     indexes)
+        cp /usr/lib/python3/dist-packages/apt_pkg*.so "${TARGET}"/appleseed/appleseed/apt_pkg.so
+
         if [ "${how}" = "full" ]; then
             info "uploading indexes into database "
             distros=(
