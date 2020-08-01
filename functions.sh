@@ -453,9 +453,11 @@ run_containers() {
 }
 
 run_manage_py() {
-    check_if_cusdeb_single_node_is_installed
+    if [[ -z "${TARGET}" ]]; then
+        check_if_cusdeb_single_node_is_installed
 
-    TARGET="$(cat cusdeb)"
+        TARGET="$(<cusdeb)"
+    fi
 
     pushd "${TARGET}"/cusdeb-api
         env PATH="${PATH}" LD_LIBRARY_PATH="${LD_LIBRARY_PATH}" "${TARGET}"/cusdeb-api-env/bin/python manage.py "$@"
