@@ -283,7 +283,7 @@ build_env() {
             for distro in "${distros[@]}"; do
                 IFS=',' read -r -a pieces <<< "${distro}"
 
-                "${TARGET}"/appleseed-env/bin/python "${TARGET}"/appleseed/bin/index_file.py \
+                env PYTHONPATH="${TARGET}"/appleseed "${TARGET}"/appleseed-env/bin/python "${TARGET}"/appleseed/bin/index_file.py \
                     --mongodb-host="${MONGO_HOST}" \
                     --mongodb-port="${MONGO_PORT}" \
                     --distro="${pieces[0]}" \
