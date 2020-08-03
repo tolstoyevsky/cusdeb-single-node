@@ -506,16 +506,18 @@ print_doc() {
 }
 
 stop_daemons() {
-    for pid in $(supervisorctl -c ./config/supervisord.conf pid all); do
-        # If a process is stopped, supervisorctl shows that the pid of the
-        # process is 0. It's not what we need.
-        if [[ "${pid}" -gt 0 ]]; then
-            info "killing ${pid}"
-            kill -9 -"${pid}"
-        fi
-    done
+    if [[ -S "${TARGET}"/cusdeb-supervisor.sock ]]; then
+        for pid in $(supervisorctl -c ./config/supervisord.conf pid all); do
+            # If a process is stopped, supervisorctl shows that the pid of the
+            # process is 0. It's not what we need.
+            if [[ "${pid}" -gt 0 ]]; then
+                info "killing ${pid}"
+                kill -9 -"${pid}"
+            fi
+        done
 
-    kill -9 "$(supervisorctl -c ./config/supervisord.conf pid)"
+        kill -9 "$(supervisorctl -c ./config/supervisord.conf pid)"
+    fi
 }
 
 switch_state_to() {
