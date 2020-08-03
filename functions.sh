@@ -517,6 +517,8 @@ stop_daemons() {
         done
 
         kill -9 "$(supervisorctl -c ./config/supervisord.conf pid)"
+
+        rm "${TARGET}"/cusdeb-supervisor.sock
     fi
 }
 
