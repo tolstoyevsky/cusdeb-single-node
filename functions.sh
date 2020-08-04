@@ -15,7 +15,6 @@
 
 check_dependencies() {
     local executables=(curl docker nc pkg-config python3 supervisord virtualenv)
-    local python_dev_installed=false
 
     for executable in "${executables[@]}"; do
         if ! command -v "${executable}" > /dev/null; then
@@ -29,14 +28,7 @@ check_dependencies() {
         exit 1
     fi
 
-    for minor_ver in "${PYTHON_DEV_MINOR_VER[@]}"; do
-        if [ -n "$(pkg-config --libs "python-${PYTHON_MAJOR_VER}.${minor_ver}" 2> /dev/null)" ]; then
-            python_dev_installed=true
-            break
-        fi
-    done
-
-    if ! ${python_dev_installed}; then
+    if ! check_if_python_dev_is_installed; then
         fatal "header files and a static library for Python are not installed"
         exit 1
     fi

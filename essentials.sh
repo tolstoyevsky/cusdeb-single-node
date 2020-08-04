@@ -23,8 +23,6 @@ PYTHON_MAJOR_VER=3
 
 PYTHON_MINOR_VER=7
 
-PYTHON_DEV_MINOR_VER=(5 6 7 8)
-
 text_in_red_color=$(tput setaf 1)
 
 text_in_green_color=$(tput setaf 2)
@@ -80,6 +78,25 @@ check_python_version() {
     IFS='.' read -ra current_python_version <<< "$(python3 -V | cut -d' ' -f2)"
 
     if (("${current_python_version[0]}" >= "${PYTHON_MAJOR_VER}")) && (("${current_python_version[1]}" >= "${PYTHON_MINOR_VER}")); then
+        true
+    else
+        false
+    fi
+}
+
+# Checks if the header files and a static library for Python are installed.
+# Globals:
+#     None
+# Arguments:
+#     None
+# Returns:
+#     Boolean
+check_if_python_dev_is_installed() {
+    local current_python_version=()
+
+    IFS='.' read -ra current_python_version <<< "$(python3 -V | cut -d' ' -f2)"
+
+    if pkg-config "python-${current_python_version[0]}.${current_python_version[1]}"; then
         true
     else
         false
