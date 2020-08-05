@@ -33,7 +33,7 @@ check_dependencies() {
         exit 1
     fi
 
-    if [ -z "$(pkg-config --libs libpq 2> /dev/null)" ]; then
+    if ! pkg-config libpq; then
         fatal "header files for PostgreSQL are not installed"
         exit 1
     fi
