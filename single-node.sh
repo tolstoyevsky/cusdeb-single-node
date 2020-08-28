@@ -63,7 +63,7 @@ export MONGO_HOST=${MONGO_HOST:=localhost}
 
 export MONGO_PORT=${MONGO_PORT:=33018}
 
-export MONGO_TAG=${MONGO_TAG:=3.2}
+export MONGO_TAG=${MONGO_TAG:=4.2}
 
 export PG_NAME=${PG_NAME:=cusdeb}
 
