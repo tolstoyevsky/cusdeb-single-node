@@ -54,6 +54,7 @@ check_ports() {
         "${BM_PORT}"
         "${DOMINION_PORT}"
         "${ORION_PORT}"
+        "${HELPIK_PORT}"
         "${MONGO_PORT}"
         "${PG_PORT}"
         "${RABBITMQ_PORT}"
@@ -75,6 +76,7 @@ clone_git_repos() {
         appleseed,ng
         blackmagic,ng
         cusdeb-api,master
+        cusdeb-helpik,master
         cusdeb-web-client,master
         dominion,master
         orion,master
@@ -116,6 +118,7 @@ create_virtenvs() {
         appleseed-env
         blackmagic-env
         cusdeb-api-env
+        cusdeb-helpik-env
         dominion-env
         orion-env
     )
@@ -383,6 +386,7 @@ install_requirements_to_virtenvs() {
         appleseed
         blackmagic
         cusdeb-api
+        cusdeb-helpik
         dominion
         orion
     )
@@ -494,6 +498,7 @@ print_doc() {
     >&2 echo "  * Black Magic: ${TARGET}/blackmagic.log"
     >&2 echo "  * CusDeb API: ${TARGET}/cusdeb-api.log"
     >&2 echo "  * CusDeb Web Client: ${TARGET}/cusdeb_web_client.log"
+    >&2 echo "  * CusDeb Helpik: ${TARGET}/cusdeb_helpik.log"
     >&2 echo
 }
 
