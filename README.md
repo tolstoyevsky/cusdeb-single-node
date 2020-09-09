@@ -58,6 +58,7 @@ Default ports are:
 | [Black Magic](https://github.com/tolstoyevsky/blackmagic)              | 8002    |
 | [Dominion](https://github.com/tolstoyevsky/dominion)                   | 8003    |
 | [Orion](https://github.com/tolstoyevsky/orion)                         | 8004    |
+| [CusDeb Helpik](https://github.com/tolstoyevsky/cusdeb-helpik)         | 8005    |
 
 ## Authors
 
