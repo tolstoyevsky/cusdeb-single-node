@@ -6,7 +6,7 @@ pushd "${TARGET}/cusdeb-web-client"
             NODE_PATH="${TARGET}"/node/lib/node_modules \
             \
             CUSDEB_TZ_URL=http://localhost/tz \
-            CUSDEB_HELPIK_URL=http://localhost:"${HELPIK_PORT}"/helpik_api \
+            CUSDEB_HELPIK_URL=http://localhost:"${HELPIK_PORT}" \
             CUSDEB_API_URL=http://localhost:"${CUSDEB_API_PORT}" \
             BLACKMAGIC_URL=ws://localhost:"${BM_PORT}"/rpc/token/%token \
             DOMINION_URL=ws://localhost:"${DOMINION_PORT}"/dominion/token/%token \
