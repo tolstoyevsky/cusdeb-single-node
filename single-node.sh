@@ -53,6 +53,8 @@ export ORION_PORT=${ORION_PORT:=8004}
 
 export HELPIK_PORT=${HELPIK_PORT:=8005}
 
+export TZ_PORT=${TZ_PORT:=8006}
+
 export MONGO_DATABASE=${MONGO_DATABASE:=cusdeb}
 
 export MONGO_HOST=${MONGO_HOST:=localhost}
