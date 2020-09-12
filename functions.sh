@@ -56,6 +56,7 @@ check_ports() {
         "${ORION_PORT}"
         "${HELPIK_PORT}"
         "${TZ_PORT}"
+        "${ANONYMOUS_PORT}"
         "${MONGO_PORT}"
         "${PG_PORT}"
         "${RABBITMQ_PORT}"
@@ -79,6 +80,7 @@ clone_git_repos() {
         cusdeb-api,master
         cusdeb-helpik,master
         cusdeb-tz,master
+        cusdeb-anonymous,master
         cusdeb-web-client,master
         dominion,master
         orion,master
@@ -122,6 +124,7 @@ create_virtenvs() {
         cusdeb-api-env
         cusdeb-helpik-env
         cusdeb-tz-env
+        cusdeb-anonymous-env
         dominion-env
         orion-env
     )
@@ -391,6 +394,7 @@ install_requirements_to_virtenvs() {
         cusdeb-api
         cusdeb-helpik
         cusdeb-tz
+        cusdeb-anonymous
         dominion
         orion
     )
@@ -504,6 +508,7 @@ print_doc() {
     >&2 echo "  * CusDeb Web Client: ${TARGET}/cusdeb_web_client.log"
     >&2 echo "  * CusDeb Helpik: ${TARGET}/cusdeb_helpik.log"
     >&2 echo "  * CusDeb Tz: ${TARGET}/cusdeb_tz.log"
+    >&2 echo "  * CusDeb Anonymous: ${TARGET}/cusdeb_anonymous.log"
     >&2 echo
 }
 
