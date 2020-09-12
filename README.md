@@ -60,6 +60,7 @@ Default ports are:
 | [Orion](https://github.com/tolstoyevsky/orion)                         | 8004    |
 | [CusDeb Helpik](https://github.com/tolstoyevsky/cusdeb-helpik)         | 8005    |
 | [CusDeb Tz](https://github.com/tolstoyevsky/cusdeb-tz)                 | 8006    |
+| [CusDeb Anonymous](https://github.com/tolstoyevsky/cusdeb-anonymous)   | 8007    |
 
 ## Authors
 
