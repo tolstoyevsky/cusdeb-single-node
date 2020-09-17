@@ -89,6 +89,10 @@ export REDIS_TAG=${REDIS_TAG:=6}
 
 export SECRET_KEY=${SECRET_KEY:="secret"}
 
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}
+
+export PKG_CONFIG_PATH=${PKG_CONFIG_PATH}
+
 USER="$(get_owner .)"
 export USER
 
