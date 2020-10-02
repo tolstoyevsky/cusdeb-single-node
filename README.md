@@ -37,7 +37,7 @@ Script supports the following parameters:
 | loaddata `<fixture>`   | Read the data from the specified fixture and load it into the database (note that `<fixture>` must be a full path to the fixture file) (see the corresponding [section](https://docs.djangoproject.com/en/2.2/ref/django-admin/#loaddata) in the official documentation).
 | makemigrations         | Generate migrations based on changes in models (see the corresponding [section](https://docs.djangoproject.com/en/2.2/ref/django-admin/#makemigrations) in the official documentation).
 | migrate                | Apply all migrations (see the corresponding [section](https://docs.djangoproject.com/en/2.2/ref/django-admin/#migrate) in the official documentation).
-| rebuild  [`<full>`]    | Clean the directory the CusDeb services were installed to (see the `build` command) and re-setup all the services. By default, the chroot environments will be left when cleaning the directory. If you want to re-setup not only the CusDeb services but also chroot environments, pass `full` as the first argument to `rebuild`.
+| rebuild  [`<fast>`]    | Clean the directory the CusDeb services were installed to (see the `build` command) and re-setup all the services. By default, the chroot environments will be left when cleaning the directory. If you want to re-setup not only the CusDeb services but also chroot environments, pass `full` as the first argument to `rebuild`.
 | remove                 | Clean the directory the CusDeb services were installed to (see the `build` command).
 | restart                | Restart all services.
 | shell                  | Start Python interpreter with established enviroment.
