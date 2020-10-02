@@ -15,7 +15,7 @@
 
 set -e
 
-USAGE="USAGE: $0 build <target directory>|compilemessages|create-superuser|dbshell|loaddata|makemessages|makemigrations|migrate|rebuild|remove|restart|shell <service>|start|stop"
+USAGE="USAGE: $0 build <target directory>|create-superuser|dbshell|loaddata|makemessages|makemigrations|migrate|rebuild|remove|restart|shell <service>|start|stop"
 
 if [ -z "$1" ]; then
     >&2 echo "${USAGE}"
@@ -158,10 +158,6 @@ rebuild)
     esac
 
     build_env "$state" "$recipe"
-
-    ;;
-compilemessages)
-    run_manage_py compilemessages -l ru
 
     ;;
 create-superuser)
