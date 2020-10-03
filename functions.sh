@@ -82,7 +82,7 @@ clone_git_repos() {
         cusdeb-tz,master
         cusdeb-anonymous,master
         cusdeb-web-client,master
-        dominion,master
+        dominion,ng
         orion,master
         pieman,master
         shirow,ng
