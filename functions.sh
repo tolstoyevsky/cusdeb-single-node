@@ -505,6 +505,8 @@ print_doc() {
     >&2 echo "  See the logs of the services for more information:"
     >&2 echo "  * Black Magic: ${TARGET}/blackmagic.log"
     >&2 echo "  * Dominion: ${TARGET}/dominion.log"
+    >&2 echo "  * Dominion Beat: ${TARGET}/dominion_beat.log"
+    >&2 echo "  * Dominion Worker: ${TARGET}/dominion_worker.log"
     >&2 echo "  * CusDeb API: ${TARGET}/cusdeb-api.log"
     >&2 echo "  * CusDeb Web Client: ${TARGET}/cusdeb_web_client.log"
     >&2 echo "  * CusDeb Helpik: ${TARGET}/cusdeb_helpik.log"
