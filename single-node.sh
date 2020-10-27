@@ -15,7 +15,7 @@
 
 set -e
 
-USAGE="USAGE: $0 build <target directory>|create-superuser|dbshell|loaddata|makemessages|makemigrations|migrate|rebuild|remove|restart|shell <service>|start|stop"
+USAGE="USAGE: $0 build <target directory>|create-superuser|dbshell|loaddata|makemessages|makemigrations|migrate|rebuild|remove|restart|shell <service>|start|stop-all"
 
 if [ -z "$1" ]; then
     >&2 echo "${USAGE}"
@@ -239,7 +239,7 @@ start)
     run_daemons
 
     ;;
-stop)
+stop-all)
     check_if_cusdeb_single_node_is_installed
 
     stop_containers
