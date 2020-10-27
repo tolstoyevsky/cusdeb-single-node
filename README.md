@@ -41,7 +41,7 @@ Script supports the following parameters:
 | restart                | Restart all services.
 | shell                  | Start Python interpreter with established enviroment.
 | start                  | Start all services.
-| stop                   | Stop all services.
+| stop-all               | Stop all services.
 
 
 When you start services you can specify the ports for them via the `BM_PORT` and `DOMINION_PORT` environment variables. For example:
