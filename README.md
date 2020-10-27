@@ -33,6 +33,7 @@ Script supports the following parameters:
 | build `<target_directory>` | Setup all CusDeb services with all dependences to the `<target_directory>`. It supposed to be empty.
 | create-superuser       | Create superuser for Django admin interface (see the corresponding [section](https://docs.djangoproject.com/en/2.2/ref/django-admin/#createsuperuser) in the official documentation).
 | dbshell                | Connect to the project's database (see the corresponding [section](https://docs.djangoproject.com/en/2.2/ref/django-admin/#dbshell) in the official documentation).
+| list                   | List all services.
 | loaddata `<fixture>`   | Read the data from the specified fixture and load it into the database (note that `<fixture>` must be a full path to the fixture file) (see the corresponding [section](https://docs.djangoproject.com/en/2.2/ref/django-admin/#loaddata) in the official documentation).
 | makemigrations         | Generate migrations based on changes in models (see the corresponding [section](https://docs.djangoproject.com/en/2.2/ref/django-admin/#makemigrations) in the official documentation).
 | migrate                | Apply all migrations (see the corresponding [section](https://docs.djangoproject.com/en/2.2/ref/django-admin/#migrate) in the official documentation).
@@ -41,6 +42,7 @@ Script supports the following parameters:
 | restart                | Restart all services.
 | shell                  | Start Python interpreter with established enviroment.
 | start                  | Start all services.
+| stop `<service>`       | Stop the specified service.
 | stop-all               | Stop all services.
 
 

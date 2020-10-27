@@ -15,7 +15,7 @@
 
 set -e
 
-USAGE="USAGE: $0 build <target directory>|create-superuser|dbshell|loaddata|makemessages|makemigrations|migrate|rebuild|remove|restart|shell <service>|start|stop-all"
+USAGE="USAGE: $0 build <target directory>|create-superuser|dbshell|list|loaddata|makemessages|makemigrations|migrate|rebuild|remove|restart|shell <service>|start|stop-all|stop <service>"
 
 if [ -z "$1" ]; then
     >&2 echo "${USAGE}"
@@ -168,6 +168,15 @@ dbshell)
     run_manage_py dbshell
 
     ;;
+list)
+    TARGET="$(<cusdeb)"
+    export TARGET
+
+    supervisorctl -c config/supervisord.conf status | awk '{ print $1 " (" $2 ")" }' | while IFS= read -r service; do
+        >&2 echo "${service}"
+    done
+
+    ;;
 loaddata)
     if [ -z "$2" ]; then
         fatal "fixture is not specified"
@@ -248,6 +257,20 @@ stop-all)
     export TARGET
 
     stop_daemons
+
+    ;;
+stop)
+    check_if_cusdeb_single_node_is_installed
+
+    TARGET="$(<cusdeb)"
+    export TARGET
+
+    if [[ -z $2 ]]; then
+        fatal "<service> is not specified. To see all services run 'sudo $0 list'"
+        exit 1
+    fi
+
+    supervisorctl -c config/supervisord.conf stop "$2"
 
     ;;
 *)
