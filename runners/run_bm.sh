@@ -1,7 +1,7 @@
 #!/bin/bash
 
 pushd "${TARGET}/blackmagic"
-    PYTHONPATH="${TARGET}"/blackmagic:"${TARGET}"/cusdeb-api:"${TARGET}"/shirow:"$(pwd)"
+    PYTHONPATH="${TARGET}"/appleseed:"${TARGET}"/blackmagic:"${TARGET}"/cusdeb-api:"${TARGET}"/shirow:"$(pwd)"
     export PYTHONPATH
 
     "${TARGET}"/blackmagic-env/bin/python bin/server.py \
