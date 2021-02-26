@@ -413,6 +413,15 @@ install_requirements_to_virtenvs() {
 
 run_containers() {
     #
+    # MailHog
+    #
+    if ! docker images mailhog/mailhog:"${MAILHOG_TAG}" | grep -q mailhog; then
+        docker pull mailhog/mailhog:"${MAILHOG_TAG}"
+    fi
+    docker run --name cusdeb-mailhog --rm -p "${MAILHOG_PORT}":1025 -p "${MAILHOG_WEB_PORT}":8025 -d mailhog/mailhog:"${MAILHOG_TAG}"
+    wait_for "${MAILHOG_PORT}"
+
+    #
     # MongoDB
     #
     if ! docker images mongo:"${MONGO_TAG}" | grep -q mongo; then
@@ -478,6 +487,7 @@ stop_container() {
 
 stop_containers() {
     containers=(
+        cusdeb-mailhog
         cusdeb-postgres
         cusdeb-mongo
         cusdeb-rabbit
