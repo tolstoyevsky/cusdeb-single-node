@@ -399,6 +399,12 @@ install_requirements_to_virtenvs() {
         exec_cmd "${TARGET}/${service}"-env/bin/pip install -r "${TARGET}/${service}"/requirements.txt
     done
 
+    # CusDeb API is used as an external dependency for BlackMagic and Dominion
+
+    exec_cmd "${TARGET}"/blackmagic-env/bin/pip install -r "${TARGET}"/cusdeb-api/requirements.txt
+
+    exec_cmd "${TARGET}"/dominion-env/bin/pip install -r "${TARGET}"/cusdeb-api/requirements.txt
+
     # Shirow is used as an external dependency for BlackMagic and Dominion
 
     exec_cmd "${TARGET}"/blackmagic-env/bin/pip install -r "${TARGET}"/shirow/requirements.txt
