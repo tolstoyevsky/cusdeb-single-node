@@ -8,6 +8,6 @@ pushd "${TARGET}/dominion"
 
     export DJANGO_SETTINGS_MODULE=dominion.settings
 
-    "${TARGET}"/dominion-env/bin/celery -A dominion.tasks worker -Q build --loglevel=info
+    "${TARGET}"/dominion-env/bin/celery -A dominion.tasks worker -Q build,email --loglevel=info
 popd
 
