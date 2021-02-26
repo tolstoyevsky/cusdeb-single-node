@@ -1,0 +1,19 @@
+name: Linter Runner
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  lint:
+    name: Run linter
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Run shellcheck
+        run: bash -c 'find . -type f -name "*.sh" -not -path "./.git/*" | xargs shellcheck -e SC2148,SC2164 -x'

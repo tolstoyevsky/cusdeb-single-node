@@ -1,8 +1,0 @@
-language: bash
-
-before_install:
-  - sudo apt-get install -y --allow-unauthenticated shellcheck
-
-script:
-  - bash -c 'find . -type f -name "*.sh" -not -path "./.git/*" | xargs shellcheck -e SC2148,SC2164 -x'
-
