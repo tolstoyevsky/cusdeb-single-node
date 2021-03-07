@@ -321,6 +321,11 @@ build_env() {
 
         pushd "${TARGET}"/pieman
             for device_os in devices/*/*; do
+                # Skip meta.yml files
+                if [[ ! -d "${device_os}" ]]; then
+                    continue
+                fi
+
                 IFS='/' read -r -a pieces <<< "${device_os}"
                 os="${pieces[-1]}"
                 device="${pieces[-2]}"
