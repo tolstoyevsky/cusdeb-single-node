@@ -74,6 +74,7 @@ check_ports() {
 }
 
 clone_git_repos() {
+    # shellcheck disable=SC2054
     local github=(
         appleseed,ng
         blackmagic,ng
