@@ -76,17 +76,17 @@ check_ports() {
 clone_git_repos() {
     # shellcheck disable=SC2054
     local github=(
-        appleseed,ng
-        blackmagic,ng
+        appleseed,master
+        blackmagic,master
         cusdeb-api,master
         cusdeb-helpik,master
         cusdeb-tz,master
         cusdeb-anonymous,master
         cusdeb-web-client,master
-        dominion,ng
+        dominion,master
         orion,master
         pieman,master
-        shirow,ng
+        shirow,master
     )
 
     for service in "${github[@]}"; do
