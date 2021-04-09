@@ -274,7 +274,7 @@ build_env() {
         distros=(
             "alpine,3.12,armhf,http://dl-cdn.alpinelinux.org/alpine/,main"
             "debian,buster,armhf,http://deb.debian.org/debian/,main"
-            "raspbian,buster,armhf,http://archive.raspbian.org/raspbian/,main"
+            "raspberrypios,buster,armhf,http://archive.raspbian.org/raspbian/,main"
             "ubuntu,xenial,armhf,http://ports.ubuntu.com/ubuntu-ports/,main"
             "ubuntu,bionic,armhf,http://ports.ubuntu.com/ubuntu-ports/,main"
             "ubuntu,bionic,arm64,http://ports.ubuntu.com/ubuntu-ports/,main"
