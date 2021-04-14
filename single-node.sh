@@ -109,8 +109,6 @@ export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}
 
 export PKG_CONFIG_PATH=${PKG_CONFIG_PATH}
 
-export BUILD_RESULT_PATH=${BUILD_RESULT_PATH:="${TARGET}/dominion-workspace"}
-
 USER="$(get_owner .)"
 export USER
 
