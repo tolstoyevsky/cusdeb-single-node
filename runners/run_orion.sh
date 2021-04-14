@@ -1,15 +1,12 @@
 #!/bin/bash
 
 pushd "${TARGET}/orion"
-    PYTHONPATH="${TARGET}/shirow:$(pwd)"
-    export PYTHONPATH
+    export PYTHONPATH="${TARGET}/shirow:${TARGET}/cusdeb-api:$(pwd)"
+    export DJANGO_SETTINGS_MODULE=orion.settings
 
-    env PATH="${PATH}:$(pwd)/bin" "${TARGET}"/orion-env/bin/python ./bin/server.py \
+    env "${TARGET}"/orion-env/bin/python ./bin/server.py \
         --log-file-prefix="${TARGET}"/orion.log \
-        --logging=debug \
         --port="${ORION_PORT}" \
-        --redis-host="${REDIS_HOST}" \
-        --redis-port="${REDIS_PORT}" \
-        --token-key="${TOKEN_KEY}" \
-        --dominion-workspace="${TARGET}"/dominion-workspace
+        --token-key="${SECRET_KEY}" \
+        --logging=debug
 popd
