@@ -6,7 +6,7 @@ The project is a set of scripts intended for simplifying deployment of CusDeb fo
 
 Install packages.
 ```bash
-sudo apt install git docker docker-compose curl pkg-config pandoc supervisor python3-pip virtualenv postgresql postgresql-server-dev-all qemu-user-static whois -y
+sudo apt install git docker docker-compose curl pkg-config pandoc supervisor python-dev bison flex swig nodejs npm python3-pip virtualenv postgresql postgresql-server-dev-all qemu-user-static whois -y
  ```
 
 Clone project.
